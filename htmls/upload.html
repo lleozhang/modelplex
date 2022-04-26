@@ -37,16 +37,12 @@
                     <h2 class="page-header">上传模型</h2><br><br>
                     <form action="/modelplex/model/" id="test_result" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div id="div-username" class="form-group">
-                            <label for="upload" class="col-sm-2 control-label"></label>
-                            <div class="col-sm-3">
-                                
+                        <div id="div-username" class="form-group">                              
                                 <label class="col-sm-2 control-label">模型名称</label>
                                 <input class="form-control" type="text" name="q1" placeholder="名称" name="q1" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')"><br />
                                 <label class="col-sm-2 control-label">模型描述</label>
                                 <textarea class="form-control" name="q2"rows="10"cols="60">请输入描述</textarea>
-                            <p><input type="file" name="upload" /></p>
-                            </div>
+                            <input type="file" name="upload" />
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-3">
