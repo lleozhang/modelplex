@@ -2,7 +2,7 @@ from django.shortcuts import render
 from Mod.models import ModInfo
 import os
 from . import s3
-
+#增加了第一条注释
 def upload(request):
     ctx={}
     if not request.COOKIES.get('logged') or request.COOKIES.get('logged')!='true':
