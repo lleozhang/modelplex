@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>模型主页</title>
+		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap.min.css" />
+		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme.min.css" />
+		<link type="text/css" rel="stylesheet" href="/static/css/uoj-theme.css" />
+	</head>
+    <body role="document">
+		<div class="container theme-showcase" role="main">
+			<div>
+			<ul class="nav nav-pills pull-right" role="tablist">
+				<li role="presentation"><a href="/modelplex/signin">{{username|default:"登录"}}</a></li>
+				<li role="presentation"><a href="/modelplex/signup">注册</a></li>
+			</ul>
+			<h1 class="hidden-xs"><a href="https://uoj.ac"></a> Modelplex </h1>
+			<h1 class="visible-xs">Modelplex</h1>
+			</div>
+
+			<div class="navbar navbar-default" role="navigation">
+	        <div class="container-fluid">
+		    <div class="navbar-header">
+                <a class="navbar-brand" href="/modelplex">Modelplex</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/modelplex/faq">关于</a></li>
+					<li><a href="/modelplex/search">搜索</a></li>
+
+                </ul>
+            </div>
+            </div>
+            </div>
+
+		<div id="uoj-content">
+			<div class="wrapper">
+				<div id="main" class="index-main col-8">
+					<h2>模型信息:</h2><br><br>
+					<p>模型id：<span>{{response_id}}</p><br>
+					<p>模型名称：<span>{{response_name}}</p><br>
+					<p>模型上传者：<span>{{response_owner|safe}}</p><br>
+					<p>模型描述：<span>{{response_description}}</p><br><br>
+					<p>模型准确率：<span>{{ response_accuracy}}</span></p><br><br>
+					<p>测试的数据数量：<span>{{ response_tests}}</span></p><br><br>
+				</div>
+
+                <form action="{{ modify_add|safe }}" id="modify_model" class="form-horizontal" method="get">
+				<div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-3">
+                      <button type="submit" id="button-submit" class="btn btn-default">修改模型信息</button>
+                    </div>
+                  </div></form>
+
+				<form action="{{ del_add|safe }}" id="delete_model" class="form-horizontal" method="get">
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-3">
+					  <button type="submit" id="button-submit" class="btn btn-default">删除模型</button>
+					</div>
+				  </div></form>
+
+				<form action="{{ test_add|safe }}" id="test_model" class="form-horizontal" method="get">
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-3">
+					  <button type="submit" id="button-submit" class="btn btn-default">测试模型</button>
+					</div>
+				</div></form>
+	</div>
+    </div>
+</div>	
+</body></html>

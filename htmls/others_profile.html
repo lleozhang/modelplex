@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>个人主页</title>
+		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap.min.css" />
+		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme.min.css" />
+		<link type="text/css" rel="stylesheet" href="/static/css/uoj-theme.css" />	
+	</head>
+    <body role="document">
+		<div class="container theme-showcase" role="main">
+			<div>
+			<ul class="nav nav-pills pull-right" role="tablist">
+				<li role="presentation"><a href="/modelplex/signin">{{username|default:"登录"}}</a></li>
+				<li role="presentation"><a href="/modelplex/signup">注册</a></li>
+			</ul>
+			<h1 class="hidden-xs"><a href="/modelplex"></a> Modelplex </h1>
+			<h1 class="visible-xs">Modelplex</h1>
+			</div>
+
+			<div class="navbar navbar-default" role="navigation">
+	        <div class="container-fluid">
+		    <div class="navbar-header">
+                <a class="navbar-brand" href="/modelplex">Modelplex</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/modelplex/faq">关于</a></li>
+					<li><a href="/modelplex/search">搜索</a></li>
+                </ul>
+            </div>
+            </div>
+            </div>
+
+            <div class="uoj-content">
+                <h1>{{username}}的个人主页</h1>
+                <h2>提交的数据集</h2>
+                {% for dataset in datasetlist %}
+                    <tr>
+                        <td><a href="{%url 'datasetinfo' dataset.id %}">{{dataset.name}}</a></td>
+                        <td>{{dataset.description}}</td>
+                    </tr>
+                {% endfor %}
+                <h2>提交的模型</h2>
+                {% for model in modellist %}
+                    <tr>
+                        <td><a href="{{ model.homepage }}">{{model.name}}</a></td>
+                        <td>{{model.description}}</td>
+                        <td>{{model.accuracy}}</td>
+                        <td>{{model.tests}}</td>
+                    </tr>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>
