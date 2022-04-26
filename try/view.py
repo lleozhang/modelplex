@@ -31,8 +31,7 @@ def show_model(request):
         test_add="/modelplex/model/" + str(var.id) + "/test_model"
 
         response_owner = "<a href='/modelplex/profile/"
-        #if not request.COOKIES.get('logged') or request.COOKIES.get('logged') != 'true' or request.COOKIES.get(
-        #        'username') != var.owner:
+        
         response_owner += var.owner + '/'
         response_owner+="'>"+var.owner+"</a>"
         
