@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from Mod.models import ModInfo
 def search(request):
-    return render(request,'search.html')
+    ctx={}
+    if request.COOKIES.get('logged') and request.COOKIES.get('logged')=='true':
+        ctx['username']=request.COOKIES.get('username')
+    return render(request,'search.html',ctx)
 
 def result(request):
     name=request.GET['q']
