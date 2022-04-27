@@ -19,9 +19,8 @@ def result(request,id):
             if var.owner != request.COOKIES.get('username'):
                 ctx['response']='你不能删除别人的模型！'
             else:
-                name=var.name
+                s3.delete_objects_from_s3(str(var.id)+'.h5','model')
                 var.delete()
-                s3.delete_objects_from_s3(name+'.h5','model')
                 ctx['response']="删除模型成功！"
                 rep = render(request,"delete_result.html",ctx)
                 return rep
