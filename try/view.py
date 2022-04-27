@@ -30,7 +30,7 @@ def show_model(request):
         name = request.GET['name']
         var=ModInfo.objects.get(name=name)
         file_lis=s3.check_bucket('modelplex-modelinfo')
-        if name+'.h5' not in file_lis:
+        if str(var.id)+'.h5' not in file_lis:
             var.delete()
             response='该模型上传失败，服务器未找到该模型！'
             ctx['result_name']='查询结果'
@@ -102,11 +102,11 @@ def show_model(request):
 
             mod = ModInfo(name=name, description=description, accuracy=0.75, tests=0,owner=request.COOKIES.get('username'),add="",homepage="/modelplex/model/?name="+name,visible=0)
             mod.save()
-            with open('static/file/'+name + '.h5', 'wb+') as f:
+            with open('static/file/'+str(mod.id) + '.h5', 'wb+') as f:
                 for chunk in File.chunks():
                     f.write(chunk)
 
-            addr = s3.upload_data('static/file/'+name+'.h5',name+'.h5', 'model')
+            addr = s3.upload_data('static/file/'+str(mod.id)+'.h5',str(mod.id)+'.h5', 'model')
 
             if addr == -1:
                 mod.delete()
@@ -117,7 +117,7 @@ def show_model(request):
             mod.add = addr
             mod.visible = 1
             mod.save()
-            os.remove('static/file/'+name+'.h5')
+            os.remove('static/file/'+str(mod.id)+'.h5')
 
             modify_add = "/modelplex/model/" + str(mod.id) + "/modify_model"
             del_add = "/modelplex/model/" + str(mod.id) + "/delete_result"
