@@ -89,16 +89,22 @@ def upload_file(file_name, bucket, object_name=None, extrainfo = None):
     return True
 
 def download_data(path,name,kind):
-    s3 = boto3.client('s3',aws_access_key_id=ACCESS_KEY,
-                    aws_secret_access_key=SECRET_KEY,
-                      aws_session_token=SESSION_TOKEN
-                    )
-    s3.download_file("modelplex-"+kind, name, path)
+    try:
+        s3 = boto3.client('s3',aws_access_key_id=ACCESS_KEY,
+                        aws_secret_access_key=SECRET_KEY,
+                          aws_session_token=SESSION_TOKEN
+                        )
+        s3.download_file("modelplex-"+kind+"info", name, path)
+    except Exception as e:
+        return -1
 
 def upload_data(path,name,kind):
-    obj_name = name
-    upload_file(path,"modelplex-"+kind,obj_name)
-    return obj_name
+    try:
+        obj_name = name
+        upload_file(path,"modelplex-"+kind+"info",obj_name)
+        return obj_name
+    except Exception as e:
+        return -1
 
 info = dict()
 info["name"] = "cifa10"
@@ -107,6 +113,8 @@ info["owner"] = "root"
 remote_dir = "sagemaker/DEMO-xgboost-dm/output/xgboost-2022-04-16-07-59-27-393/output/model.tar.gz"
 if __name__ == '__main__':
     #create_bucket("modelplex-model")
+    #create_bucket("modelplex-dataset")
+    #create_bucket("test")
     list_existing_buckets()
     #upload_file("cifar10.zip","modelplexdata",extrainfo = {"Metadata":info})
     #download_file("model.tar.gz","lhwbucket",remote_dir)
