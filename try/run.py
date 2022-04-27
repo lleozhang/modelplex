@@ -49,9 +49,15 @@ def result(request,id):
     str2 = random_string(size, chars)
     str3 = random_string(size, chars)
 
-    s3.download_data('static/file/' + mod.name + str1 + '.h5', mod.name + '.h5', 'model')
-    s3.download_data('static/file/' + str(dt.id) + str2 + 'x.npy', str(dt.id) + 'x.npy', 'dataset')
-    s3.download_data('static/file/' + str(dt.id) + str3 + 'y.npy', str(dt.id) + 'y.npy', 'dataset')
+    t1=s3.download_data('static/file/' + mod.name + str1 + '.h5', mod.name + '.h5', 'model')
+    t2=s3.download_data('static/file/' + str(dt.id) + str2 + 'x.npy', str(dt.id) + 'x.npy', 'dataset')
+    t3=s3.download_data('static/file/' + str(dt.id) + str3 + 'y.npy', str(dt.id) + 'y.npy', 'dataset')
+
+    if t1==-1 or t2==-1 or t3==-1:
+        response='由于某种原因，测试失败，请重新尝试！'
+        ctx['response'] = response
+        rep = render(request, 'test_result.html', ctx)
+        return rep
 
     size, accu = run_model.test_model('static/file/' + mod.name + str1 + '.h5',
                                       'static/file/' + str(dt.id) + str2 + 'x.npy',
