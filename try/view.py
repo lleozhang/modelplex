@@ -98,7 +98,7 @@ def show_model(request):
 
         if flag == 0:
 
-            mod = ModInfo(name=name, description=description, accuracy=0.75, tests=0,owner=request.COOKIES.get('username'),add="",homepage="/modelplex/model/?name="+name)
+            mod = ModInfo(name=name, description=description, accuracy=0.75, tests=0,owner=request.COOKIES.get('username'),add="",homepage="/modelplex/model/?name="+name,visible=0)
             mod.save()
             with open('static/file/'+name + '.h5', 'wb+') as f:
                 for chunk in File.chunks():
@@ -108,6 +108,7 @@ def show_model(request):
 
             os.remove('static/file/'+name+'.h5')
             mod.add = addr
+            mod.visible=1
             mod.save()
             modify_add = "/modelplex/model/" + str(mod.id) + "/modify_model"
             del_add = "/modelplex/model/" + str(mod.id) + "/delete_result"
