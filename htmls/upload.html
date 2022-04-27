@@ -39,9 +39,9 @@
                         {% csrf_token %}
                         <div id="div-username" class="form-group">                              
                                 <label class="col-sm-2 control-label">模型名称</label>
-                                <input class="form-control" type="text" name="q1" placeholder="名称" name="q1" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')"><br />
+                                <input class="form-control" type="text" name="q1" placeholder="名称" name="q1" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')" maxlength="20"> <br />
                                 <label class="col-sm-2 control-label">模型描述</label>
-                                <textarea class="form-control" name="q2"rows="10"cols="60">请输入描述</textarea>
+                                <textarea class="form-control" name="q2"rows="10"cols="60" maxlength="1000">请输入描述</textarea>
                             <input type="file" name="upload" />
                         </div>
                         <div class="form-group">
