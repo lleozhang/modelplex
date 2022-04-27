@@ -34,10 +34,22 @@ def result(request,id):
     size = 15
     mod= ModInfo.objects.get(id=id)
     flag=0
+    ccnt=0
     for dt in Dataset.objects.all():
         if dt.name==request.GET['q1']:
-            flag=1
-            break
+            lst=check_bucket("modelplex-datasetinfo")
+            for aa in lst:
+                if aa==str(dt.id)+"x.npy" :
+                    ccnt++
+                if aa==str(dt.id)+"y.npy" :
+                    ccnt++
+            if ccnt==2:
+                flag=1
+                break
+            else :
+                dt.delete()
+                flag=0
+                break
     if flag==0:
         response="未找到该数据集，请返回测试页面手动上传！"
         rep = render(request, 'test_result.html', {"response": response})
