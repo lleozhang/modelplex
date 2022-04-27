@@ -42,9 +42,9 @@
                     <label class="col-sm-2 control-label">数据集的标准结果</label>
                     <input type="file" id="test_file" name="verifydataset"><br/>
                     <label class="col-sm-2 control-label">数据集名称</label>
-                    <input class="form-control" type="text" name="dataname" placeholder="名称" name="q1" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')"><br />
+                    <input class="form-control" type="text" name="dataname" placeholder="名称" name="q1" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')" maxlength="20"><br />
                     <label class="col-sm-2 control-label">数据集描述</label>
-                    <textarea class="form-control" name="datadescription"rows="10"cols="60">请输入描述</textarea>
+                    <textarea class="form-control" name="datadescription"rows="10"cols="60" maxlength="1000">请输入描述</textarea>
                     <button type="submit" id="button-submit">提交</button>
                 </form>
                 <p>{{ rlt }}</p>
