@@ -2,7 +2,7 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 import os
-from key import ACCESS_KEY,SECRET_KEY
+from key import ACCESS_KEY,SECRET_KEY,SESSION_TOKEN
 
 def create_bucket(bucket_name, region=None):
     """Create an S3 bucket in a specified region
@@ -18,14 +18,16 @@ def create_bucket(bucket_name, region=None):
     try:
         if region is None:
             s3_client = boto3.client('s3',aws_access_key_id=ACCESS_KEY,
-                                    aws_secret_access_key=SECRET_KEY
+                                    aws_secret_access_key=SECRET_KEY,
+                                    aws_session_token = SESSION_TOKEN
                                     )
             #,aws_session_token=SESSION_TOKEN
             s3_client.create_bucket(Bucket=bucket_name)
         else:
             s3_client = boto3.client('s3', region_name=region,
                                     aws_access_key_id=ACCESS_KEY,
-                                    aws_secret_access_key=SECRET_KEY
+                                    aws_secret_access_key=SECRET_KEY,
+                                     aws_session_token=SESSION_TOKEN
                                     )
             location = {'LocationConstraint': region}
             s3_client.create_bucket(Bucket=bucket_name,
@@ -39,6 +41,7 @@ def list_existing_buckets():
     # Retrieve the list of existing buckets
     s3 = boto3.client('s3',aws_access_key_id=ACCESS_KEY,
                     aws_secret_access_key=SECRET_KEY,
+                      aws_session_token=SESSION_TOKEN
                     )#aws_session_token=SESSION_TOKEN
     response = s3.list_buckets()
     # Output the bucket names
@@ -50,6 +53,7 @@ def list_existing_buckets():
 def delete_objects_from_s3(file_path,kind):
     s3_client = boto3.client('s3', aws_access_key_id=ACCESS_KEY,
                              aws_secret_access_key=SECRET_KEY,
+                             aws_session_token=SESSION_TOKEN
                              )
     try:
       result = s3_client.delete_object(Bucket="modelplex-"+kind, Key=file_path)
@@ -72,6 +76,7 @@ def upload_file(file_name, bucket, object_name=None, extrainfo = None):
     # Upload the file
     s3_client = boto3.client('s3',aws_access_key_id=ACCESS_KEY,
                     aws_secret_access_key=SECRET_KEY,
+                             aws_session_token=SESSION_TOKEN
                     )
     try:
         if extrainfo is None:
@@ -85,7 +90,8 @@ def upload_file(file_name, bucket, object_name=None, extrainfo = None):
 
 def download_data(path,name,kind):
     s3 = boto3.client('s3',aws_access_key_id=ACCESS_KEY,
-                    aws_secret_access_key=SECRET_KEY
+                    aws_secret_access_key=SECRET_KEY,
+                      aws_session_token=SESSION_TOKEN
                     )
     s3.download_file("modelplex-"+kind, name, path)
 
@@ -102,7 +108,5 @@ remote_dir = "sagemaker/DEMO-xgboost-dm/output/xgboost-2022-04-16-07-59-27-393/o
 if __name__ == '__main__':
     #create_bucket("modelplex-model")
     list_existing_buckets()
-    t = upload_data("test.txt","test.txt","model")
-    print(t)
-    #upload_file("a.h5","modelplex-model")
+    #upload_file("cifar10.zip","modelplexdata",extrainfo = {"Metadata":info})
     #download_file("model.tar.gz","lhwbucket",remote_dir)
