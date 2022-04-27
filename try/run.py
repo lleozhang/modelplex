@@ -57,6 +57,11 @@ def result(request,id):
         return rep
 
     dt = Dataset.objects.get(name=request.GET['q1'])
+    if dt.visible==0:
+        response = "该数据集目前不可用，请稍后尝试或换用其他数据集！"
+        ctx['response'] = response
+        rep = render(request, 'test_result.html', ctx)
+        return rep
 
     str1 = random_string(size, chars)
     str2 = random_string(size, chars)

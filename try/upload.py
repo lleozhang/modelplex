@@ -44,7 +44,7 @@ def result(request):
                 break
     
     if flag==0:
-        mod = ModInfo(name=name, description=description, owner=request.COOKIES.get('username'),accuracy=0.75, add="")
+        mod = ModInfo(name=name, description=description, owner=request.COOKIES.get('username'),accuracy=0.75, add="",visible=0)
         mod.save()
         with open(name + '.h5', 'wb+') as f:
             for chunk in File.chunks():
@@ -56,6 +56,7 @@ def result(request):
             flag=1
         else:
             mod.add=addr
+            mod.visible=1
             mod.save()
             response="模型上传成功！"
     ctx['response']=response

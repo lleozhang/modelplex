@@ -1,10 +1,7 @@
 from django.shortcuts import render
 from Mod.models import ModInfo
 def search(request):
-    ctx={}
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged')=='true':
-        ctx['username']=request.COOKIES.get('username')
-    return render(request,'search.html',ctx)
+    return render(request,'search.html')
 
 def result(request):
     name=request.GET['q']
@@ -14,7 +11,7 @@ def result(request):
     response=""
     flag=0
     for var in ModInfo.objects.all():
-        if name in var.name:
+        if name in var.name and var.visible==1:
           flag=1
           response+=var.name+":"+"<a href='/modelplex/model/?name="+var.name+"'>直达模型</a>"+"\r\n\r\n"
 

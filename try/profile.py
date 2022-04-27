@@ -12,8 +12,8 @@ def profile(request,name):
     ctx ={}
     if request.COOKIES.get('logged') and request.COOKIES.get('logged') =='true':
         ctx['username']=name
-        dataset1=Dataset.objects.filter(owner=name)
-        models=ModInfo.objects.filter(owner=name)
+        dataset1=Dataset.objects.filter(owner=name,visible=1)
+        models=ModInfo.objects.filter(owner=name,visible=1)
         ctx['datasetlist']=dataset1
         ctx['modellist']=models
         if name == request.COOKIES.get('username'):

@@ -16,9 +16,6 @@ def faq(request):
 
 def homepage(request):
     ctx={}
-    User.objects.all().delete()
-    ModInfo.objects.all().delete()
-    Dataset.objects.all().delete()
     if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true' :
         ctx['username']=request.COOKIES.get('username')
     return render(request,'mainpage.html',ctx)
