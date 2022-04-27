@@ -24,7 +24,6 @@ urlpatterns = [
     path('modelplex/search',search.search),
     path('modelplex/search_result/',search.result),
     path('modelplex/upload_model',upload.upload),
-    path('modelplex/upload_model/upload_result/',upload.result),
     path('modelplex/model/<int:id>/modify_model/',modify.modify),
     path('modelplex/model/<int:id>/modify_model/modify_result/',modify.result),
     path('modelplex/model/',view.show_model),

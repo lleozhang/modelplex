@@ -42,7 +42,7 @@ def result(request):
                 flag=1
                 response="与别的模型重名了！"
                 break
-    
+
     if flag==0:
         mod = ModInfo(name=name, description=description, owner=request.COOKIES.get('username'),accuracy=0.75, add="",visible=0)
         mod.save()

@@ -106,10 +106,17 @@ def show_model(request):
 
             addr = s3.upload_data('static/file/'+name+'.h5',name+'.h5', 'model')
 
-            os.remove('static/file/'+name+'.h5')
+            if addr == -1:
+                mod.delete()
+                response = '模型上传失败！'
+                ctx['response'] = response
+                return render(request,'upload_result.html',ctx)
+
             mod.add = addr
-            mod.visible=1
+            mod.visible = 1
             mod.save()
+            os.remove('static/file/'+name+'.h5')
+
             modify_add = "/modelplex/model/" + str(mod.id) + "/modify_model"
             del_add = "/modelplex/model/" + str(mod.id) + "/delete_result"
             test_add = "/modelplex/model/" + str(mod.id) + "/test_model"
