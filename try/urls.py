@@ -38,7 +38,7 @@ urlpatterns = [
     path('modelplex/modify_password/', profile.mp_view),
     path('modelplex/modi_password_result/', profile.modify_password),
     url(r'^modelplex/profile/([\w\-]+)/$', profile.profile),
-    url(r'^modelplex/dataset/(\d)/$', data.dataset),
+    path('modelplex/dataset/<int:nowid>/', data.dataset),
     path('modelplex/model/<int:mid>/dataset_upload/', data.dataset_upload),
 
 ]
