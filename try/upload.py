@@ -46,10 +46,10 @@ def result(request):
     if flag==0:
         mod = ModInfo(name=name, description=description, owner=request.COOKIES.get('username'),accuracy=0.75, add="",visible=0)
         mod.save()
-        with open(name + '.h5', 'wb+') as f:
+        with open(str(mod.id) + '.h5', 'wb+') as f:
             for chunk in File.chunks():
                 f.write(chunk)
-        addr = s3.upload_data(name + '.h5', name + '.h5' , 'model')
+        addr = s3.upload_data(str(mod.id) + '.h5', str(mod.id)+ '.h5' , 'model')
         if addr==-1:
             mod.delete()
             response='模型上传失败！'
