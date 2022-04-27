@@ -23,6 +23,8 @@ def result(request,id):
     var=ModInfo.objects.get(id=id)
     name=var.name
     ctx={}
+    if request.COOKIES.get('logged') and request.COOKIES.get('logged')=='true':
+        ctx['username']=request.COOKIES.get('username')
     new_name=request.GET['q1']
     new_des=request.GET['q2']
 
