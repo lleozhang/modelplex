@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from Mod.models import ModInfo
 from User.models import User
+from Datasetinfo.models import Dataset
 import json
 from . import s3
 
@@ -15,6 +16,9 @@ def faq(request):
 
 def homepage(request):
     ctx={}
+    User.objects.all().delete()
+    ModInfo.objects.all().delete()
+    Dataset.objects.all().delete()
     if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true' :
         ctx['username']=request.COOKIES.get('username')
     return render(request,'mainpage.html',ctx)
@@ -26,12 +30,20 @@ def show_model(request):
     if request.method=='GET':
         name = request.GET['name']
         var=ModInfo.objects.get(name=name)
+        file_lis=s3.check_bucket('modelplex-modelinfo')
+        if name+'.h5' not in file_lis:
+            var.delete()
+            response='该模型上传失败，服务器未找到该模型！'
+            ctx['result_name']='查询结果'
+            ctx['response']=response
+            return render(request,'result.html',ctx)
         modify_add = "/modelplex/model/" + str(var.id) + "/modify_model"
         del_add="/modelplex/model/" + str(var.id) + "/delete_result"
         test_add="/modelplex/model/" + str(var.id) + "/test_model"
 
         response_owner = "<a href='/modelplex/profile/"
-        
+        #if not request.COOKIES.get('logged') or request.COOKIES.get('logged') != 'true' or request.COOKIES.get(
+        #        'username') != var.owner:
         response_owner += var.owner + '/'
         response_owner+="'>"+var.owner+"</a>"
         
