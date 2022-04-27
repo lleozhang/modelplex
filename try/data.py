@@ -22,7 +22,7 @@ def dataset(request,nowid):
     ccnt=0
     if dataset1.count()>0 :
         for var in dataset1 :
-            lst=s3.check("modelplex-datasetinfo")
+            lst=s3.check_bucket("modelplex-datasetinfo")
             for aa in lst:
                 if aa==str(var.id)+"x.npy":
                     ccnt+=1
