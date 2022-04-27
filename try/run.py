@@ -67,7 +67,7 @@ def result(request,id):
     str2 = random_string(size, chars)
     str3 = random_string(size, chars)
 
-    t1=s3.download_data('static/file/' + mod.name + str1 + '.h5', mod.name + '.h5', 'model')
+    t1=s3.download_data('static/file/' + str(mod.id) + str1 + '.h5', str(mod.id) + '.h5', 'model')
     t2=s3.download_data('static/file/' + str(dt.id) + str2 + 'x.npy', str(dt.id) + 'x.npy', 'dataset')
     t3=s3.download_data('static/file/' + str(dt.id) + str3 + 'y.npy', str(dt.id) + 'y.npy', 'dataset')
 
@@ -77,11 +77,11 @@ def result(request,id):
         rep = render(request, 'test_result.html', ctx)
         return rep
 
-    size, accu = run_model.test_model('static/file/' + mod.name + str1 + '.h5',
+    size, accu = run_model.test_model('static/file/' + str(mod.id) + str1 + '.h5',
                                       'static/file/' + str(dt.id) + str2 + 'x.npy',
                                       'static/file/' + str(dt.id) + str3 + 'y.npy')
 
-    os.remove('static/file/' + mod.name + str1 + '.h5')
+    os.remove('static/file/' + str(mod.id) + str1 + '.h5')
     os.remove('static/file/' + str(dt.id) + str2 + 'x.npy')
     os.remove('static/file/' + str(dt.id) + str3 + 'y.npy')
 
