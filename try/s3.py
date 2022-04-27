@@ -105,6 +105,16 @@ def upload_data(path,name,kind):
         return obj_name
     except Exception as e:
         return -1
+def check_bucket(bucket_name):
+    s3_client = boto3.client('s3', aws_access_key_id=ACCESS_KEY,
+                             aws_secret_access_key=SECRET_KEY,
+                             aws_session_token=SESSION_TOKEN
+                             )
+    objs = s3_client.list_objects(Bucket=bucket_name)
+    objs_contents = objs['Contents']
+    for i in range(len(objs_contents)):
+        filename = objs_contents[i]['Key']
+        print(filename)
 
 info = dict()
 info["name"] = "cifa10"
@@ -116,5 +126,6 @@ if __name__ == '__main__':
     #create_bucket("modelplex-dataset")
     #create_bucket("test")
     list_existing_buckets()
+    check_bucket("modelplex-modelinfo")
     #upload_file("cifar10.zip","modelplexdata",extrainfo = {"Metadata":info})
     #download_file("model.tar.gz","lhwbucket",remote_dir)
