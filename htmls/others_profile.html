@@ -38,7 +38,7 @@
                 <h2>提交的数据集</h2>
                 {% for dataset in datasetlist %}
                     <tr>
-                        <td><a href="{%url 'datasetinfo' dataset.id %}">{{dataset.name}}</a></td>
+                        <td><a href="/modelplex/dataset/{{dataset.id }}">{{dataset.name}}</a></td>
                         <td>{{dataset.description}}</td>
                     </tr>
                 {% endfor %}
