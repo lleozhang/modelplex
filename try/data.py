@@ -19,8 +19,20 @@ def dataset(request,nowid):
     if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true' :
         ctx['username']=request.COOKIES.get('username')
     dataset1=Dataset.objects.filter(id=nowid)
+    ccnt=0
     if dataset1.count()>0 :
         for var in dataset1 :
+            lst=s3.check("modelplex-datasetinfo")
+            for aa in lst:
+                if aa==str(var.id)+"x.npy":
+                    ccnt+=1
+                if aa==str(var.id)+"y.npy":
+                    ccnt+=1
+            if ccnt!=2:
+                var.delete()
+                ctx['result_name']="上传数据集结果"
+                ctx['response']="不存在此数据集的文件，请重新上传！"
+                return render(request,'result.html',ctx)
             ctx['data_name']=var.name
             ctx['data_description']=var.description
             ctx['accuracy']=var.accur
