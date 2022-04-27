@@ -3,10 +3,6 @@ from Mod.models import ModInfo
 import os
 from . import s3
 
-#第二条测试
-
-#增加了第一条注释
-
 def upload(request):
     ctx={}
     if not request.COOKIES.get('logged') or request.COOKIES.get('logged')!='true':
@@ -54,8 +50,16 @@ def result(request):
             for chunk in File.chunks():
                 f.write(chunk)
         addr = s3.upload_data(name + '.h5', name + '.h5' , 'model')
-        mod.add=addr
-        mod.save()
-        response="模型上传成功！"
+        if addr==-1:
+            mod.delete()
+            response='模型上传失败！'
+            flag=1
+        else:
+            mod.add=addr
+            mod.save()
+            response="模型上传成功！"
     ctx['response']=response
-    return render(request,"model.html",ctx)
+    if flag==1:
+        return render(request,'upload_result.html',ctx)
+    else:
+        return render(request,"model.html",ctx)
