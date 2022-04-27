@@ -44,12 +44,11 @@ def result(request,id):
         if v.name==new_name and v.name != name:
             ctx["response"]="与已有模型重名！"
             rep = render(request,"modify_result.html",ctx)
-            rep.delete_cookie('model_name')
             return rep
 
     var.name=new_name
     var.description=new_des
-    var.homgpage='/modelplex/model/?name='+new_name
+    var.homepage='/modelplex/model/?name='+new_name
     var.save()
     ctx["response"]="修改模型成功！"
     rep = render(request,"modify_result.html",ctx)
