@@ -37,12 +37,12 @@ def result(request,id):
     ccnt=0
     for dt in Dataset.objects.all():
         if dt.name==request.GET['q1']:
-            lst=check_bucket("modelplex-datasetinfo")
+            lst=s3.check_bucket("modelplex-datasetinfo")
             for aa in lst:
                 if aa==str(dt.id)+"x.npy" :
-                    ccnt++
+                    ccnt+=1
                 if aa==str(dt.id)+"y.npy" :
-                    ccnt++
+                    ccnt+=1
             if ccnt==2:
                 flag=1
                 break
@@ -52,7 +52,8 @@ def result(request,id):
                 break
     if flag==0:
         response="未找到该数据集，请返回测试页面手动上传！"
-        rep = render(request, 'test_result.html', {"response": response})
+        ctx['response']=response
+        rep = render(request, 'test_result.html', ctx)
         return rep
 
     dt = Dataset.objects.get(name=request.GET['q1'])
