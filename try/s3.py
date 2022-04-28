@@ -56,7 +56,7 @@ def delete_objects_from_s3(file_path,kind):
                              aws_session_token=SESSION_TOKEN
                              )
     try:
-      result = s3_client.delete_object(Bucket="modelplex-"+kind, Key=file_path)
+      result = s3_client.delete_object(Bucket="modelplex-"+kind+'info', Key=file_path)
     except ClientError as e:
       raise Exception( "boto3 client error in delete_objects_from_s3 function: " + e.__str__())
     except Exception as e:
