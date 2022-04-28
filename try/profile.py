@@ -11,9 +11,18 @@ def profile(request,name):
     request.encoding='utf-8'
     ctx ={}
     if request.COOKIES.get('logged') and request.COOKIES.get('logged') =='true':
+        ctx['Username']=request.COOKIES.get('username')
         ctx['username']=name
-        dataset1=Dataset.objects.filter(owner=name,visible=1)
-        models=ModInfo.objects.filter(owner=name,visible=1)
+        dataset1=[]
+        models=[]
+        for var in Dataset.objects.all():
+            if var.owner==name and var.visible==1:
+                dataset1.append(var)
+
+        for var in ModInfo.objects.all():
+            if var.owner==name and var.visible==1:
+                models.append(var)
+
         ctx['datasetlist']=dataset1
         ctx['modellist']=models
         if name == request.COOKIES.get('username'):
