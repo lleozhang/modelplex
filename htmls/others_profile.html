@@ -45,7 +45,7 @@
                 <h2>提交的模型</h2>
                 {% for model in modellist %}
                     <tr>
-                        <td><a href="{{ model.homepage }}">{{model.name}}</a></td>
+                        <td><a href="{{ model.homepage }}">{{model.name}}</a></td><br>
                         <td>模型描述：{{model.description}}</td><br>
                         <td>模型准确率：{{model.accuracy}}</td><br>
                         <td>模型测试数：{{model.tests}}</td><br>
