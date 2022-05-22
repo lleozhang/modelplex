@@ -10,27 +10,7 @@
 	</head>
     <body role="document">
 		<div class="container theme-showcase" role="main">
-			<div>
-			<ul class="nav nav-pills pull-right" role="tablist">
-				<li role="presentation"><a href="/modelplex/signin">{{username|default:"登录"}}</a></li>
-				<li role="presentation"><a href="/modelplex/signup">注册</a></li>
-			</ul>
-			<h1 class="hidden-xs"><a href="https://uoj.ac"></a> Modelplex </h1>
-			<h1 class="visible-xs">Modelplex</h1>
-			</div>
-			<div class="navbar navbar-default" role="navigation">
-                <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/modelplex">Modelplex</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="/modelplex/faq">关于</a></li>
-                        <li><a href="/modelplex/search">搜索</a></li>
-                    </ul>
-                </div>
-                </div>
-                </div>
+			{% include "headerbar.html" %}
 
                 <div class="uoj-content">
                     <h2 class="page-header">测试模型</h2><br><br>
