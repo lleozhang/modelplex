@@ -9,4 +9,5 @@ class ModInfo(models.Model):
     add = models.CharField(max_length=1000)
     tests = models.IntegerField()
     homepage = models.CharField(max_length=1000)
-
+    visible=models.IntegerField()
+    type=models.IntegerField()
