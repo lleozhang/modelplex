@@ -11,13 +11,27 @@
     <body role="document">
 	<div class="container theme-showcase" role="main">
     {% include "headerbar.html" %}
-    <h3>数据集：</h3>
-    {% for dataset in datasetlist %}
-        <tr>
-            <td><a href="/modelplex/dataset/{{dataset.id}}">{{dataset.name}}</a></td><br>
-            <td>数据集描述：{{dataset.description}}</td><br>
-        </tr>
-    {% endfor %}
+    
+    <div class="panel panel-default">
+        <div class="panel-body">
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">数据集名称</th>
+                                <th style="width:40%">数据集描述</th>
+                            </tr>
+                        </thead>
+                        {% for dataset in datasetlist %}
+                        <tr>
+                            <td><a href="/modelplex/dataset/{{dataset.id}}">{{dataset.name}}</a></td><br>
+                            <td>{{dataset.description}}</td><br>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
