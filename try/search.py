@@ -1,21 +1,49 @@
-from django.shortcuts import render
-from Mod.models import ModInfo
-def search(request):
-    return render(request,'search.html')
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>搜索</title>
+		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap.min.css" />
+		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme.min.css" />
+		<link type="text/css" rel="stylesheet" href="/static/css/uoj-theme.css" />
+	</head>
+    <body role="document">
+		<div class="container theme-showcase" role="main">
+			{% include "headerbar.html" %}
 
-def result(request):
-    name=request.GET['q']
-    ctx={}
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged')=='true':
-        ctx['username']=request.COOKIES.get('username')
-    response=""
-    flag=0
-    for var in ModInfo.objects.all():
-        if name in var.name and var.visible==1:
-          flag=1
-          response+=var.name+":"+"<a href='/modelplex/model/?name="+var.name+"'>直达模型</a>"+"\r\n\r\n"
+                <div class="uoj-content">
+                    <h2 class="page-header">搜索</h2><br><br>
+                    <form action="/modelplex/search_result" id="search_result" class="form-horizontal" method="get">
+                        <div id="div-username" class="form-group">
+                            <label for="input-username" class="col-sm-2 control-label"></label>
+                            <div class="col-sm-3">
+                              <input type="text" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')"  class="form-control" id="input-username" name="q" placeholder="在此键入模型关键词..." maxlength="20" />
+                              <!--<span class="help-block" id="help-username"></span>-->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-3">
+                              <button type="submit" id="button-submit" class="btn btn-default">搜索相关模型！</button>
+                            </div>
+                        </div>
+                    </form>                    
+		<form action="/modelplex/search_dataset_result" id="search_dataset_result" class="form-horizontal" method="get">
+			<div id="div-username" class="form-group">
+                            		<label for="input-username" class="col-sm-2 control-label"></label>
+                            			<div class="col-sm-3">
+                              			<input type="text" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')"  class="form-control" id="input-username" name="q" placeholder="在此键入数据集关键词..." maxlength="20" />
+                              		<!--<span class="help-block" id="help-username"></span>-->
+                            			</div>
+                        	</div>    
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-3">
+                              <button type="submit" id="button-submit" class="btn btn-default">搜索相关数据集！</button>
+                            </div>
+                        </div>
+                    </form>
 
-    if flag==0:
-        response="找不到这个模型，您要上传一个吗？" + " " + "<a href='/modelplex/upload_model'>上传模型</a>"
-    ctx["response"]=response
-    return render(request,'search_result.html',ctx)
+                  </div>
+                </div>
+    </body>
+</html>
