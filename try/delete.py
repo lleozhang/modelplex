@@ -3,10 +3,10 @@ from Mod.models import ModInfo
 from django.http import HttpResponse
 from . import s3
 import json
+import os
 
 
 def result(request,id):
-
     response=""
     ctx={}
     if request.COOKIES.get('logged') and request.COOKIES.get('logged')=='true':
@@ -19,7 +19,7 @@ def result(request,id):
             if var.owner != request.COOKIES.get('username'):
                 ctx['response']='你不能删除别人的模型！'
             else:
-                s3.delete_objects_from_s3(str(var.id)+'.h5','model')
+                os.remove('static/file/'+str(var.id)+'.h5')
                 var.delete()
                 ctx['response']="删除模型成功！"
                 rep = render(request,"delete_result.html",ctx)

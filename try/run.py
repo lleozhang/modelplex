@@ -9,11 +9,6 @@ import json
 import random
 import string
 
-
-def random_string(str_size, allowed_chars):
-    return ''.join(random.choice(allowed_chars) for x in range(str_size))
-
-
 def test_model(request,id):
     ctx={}
     if not request.COOKIES.get('logged') or request.COOKIES.get('logged')!='true':
@@ -30,29 +25,10 @@ def result(request,id):
     ctx = {}
     if request.COOKIES.get('logged') and request.COOKIES.get('logged')== 'true':
         ctx['username'] = request.COOKIES.get('username')
-    chars = string.ascii_letters
-    size = 15
     mod= ModInfo.objects.get(id=id)
-    flag=0
-    ccnt=0
-    for dt in Dataset.objects.all():
-        if dt.name==request.GET['q1']:
-            lst=s3.check_bucket("modelplex-datasetinfo")
-            for aa in lst:
-                if aa==str(dt.id)+"x.npy" :
-                    ccnt+=1
-                if aa==str(dt.id)+"y.npy" :
-                    ccnt+=1
-            if ccnt==2:
-                flag=1
-                break
-            else :
-                dt.delete()
-                flag=0
-                break
-    if flag==0:
-        response="未找到该数据集，请返回测试页面手动上传！"
-        ctx['response']=response
+    if mod.visible==0:
+        response="该模型目前不可用，请稍后尝试或换用其他模型！"
+        ctx['response'] = response
         rep = render(request, 'test_result.html', ctx)
         return rep
 
@@ -63,27 +39,9 @@ def result(request,id):
         rep = render(request, 'test_result.html', ctx)
         return rep
 
-    str1 = random_string(size, chars)
-    str2 = random_string(size, chars)
-    str3 = random_string(size, chars)
-
-    t1=s3.download_data('static/file/' + str(mod.id) + str1 + '.h5', str(mod.id) + '.h5', 'model')
-    t2=s3.download_data('static/file/' + str(dt.id) + str2 + 'x.npy', str(dt.id) + 'x.npy', 'dataset')
-    t3=s3.download_data('static/file/' + str(dt.id) + str3 + 'y.npy', str(dt.id) + 'y.npy', 'dataset')
-
-    if t1==-1 or t2==-1 or t3==-1:
-        response='由于某种原因，测试失败，请重新尝试！'
-        ctx['response'] = response
-        rep = render(request, 'test_result.html', ctx)
-        return rep
-
-    size, accu = run_model.test_model('static/file/' + str(mod.id) + str1 + '.h5',
-                                      'static/file/' + str(dt.id) + str2 + 'x.npy',
-                                      'static/file/' + str(dt.id) + str3 + 'y.npy')
-
-    os.remove('static/file/' + str(mod.id) + str1 + '.h5')
-    os.remove('static/file/' + str(dt.id) + str2 + 'x.npy')
-    os.remove('static/file/' + str(dt.id) + str3 + 'y.npy')
+    size, accu = run_model.test_model('static/file/' + str(mod.id)  + '.h5',
+                                      'static/file/' + str(dt.id)  + 'x.npy',
+                                      'static/file/' + str(dt.id)  + 'y.npy')
 
     if size==-1 and accu==-1:
         response = '模型测试失败，您提交的数据集无法正常在该模型上运行，请检查你提交的数据集大小是否正确、测试数据与标签是否匹配、数据集格式与模型描述中要求是否一致！'

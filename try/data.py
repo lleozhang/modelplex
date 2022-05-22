@@ -25,17 +25,6 @@ def dataset(request, nowid):
     ccnt = 0
     if dataset1.count() > 0:
         for var in dataset1:
-            lst = s3.check_bucket("modelplex-datasetinfo")
-            for aa in lst:
-                if aa == str(var.id) + "x.npy":
-                    ccnt += 1
-                if aa == str(var.id) + "y.npy":
-                    ccnt += 1
-            if ccnt != 2:
-                var.delete()
-                ctx['result_name'] = "上传数据集结果"
-                ctx['response'] = "不存在此数据集的文件，请重新上传！"
-                return render(request, 'result.html', ctx)
             ctx['data_name'] = var.name
             ctx['data_description'] = var.description
             ctx['accuracy'] = var.accur
@@ -57,40 +46,30 @@ def dataset_upload(request, mid):
                 nm = request.POST.get('dataname')
                 dc = request.POST.get('datadescription')
 
+                flag=0
+                for var in Dataset.objects.all():
+                    if nm==var.name:
+                        ctx['rlt'] = "与别的数据集重名了！"
+                        flag=1
+                if flag==1:
+                    return render(request, "dataset_upload.html", ctx)
                 # s3
-                namex = filex.name
-                namex = namex.split('.')[-1]
 
-                namey = filey.name
-                namey = namey.split('.')[-1]
 
-                if namex != 'npy' or namey != 'npy':
-                    ctx['rlt'] = '不支持的数据集类型！'
-                else:
-                    dataset1 = Dataset(name=nm, description=dc, owner=request.COOKIES.get('username'), modelid=mid,
-                                       accur=1,visible=0)
-                    dataset1.save()
+                dataset1 = Dataset(name=nm, description=dc, owner=request.COOKIES.get('username'), modelid=mid,
+                                   accur=1,visible=0)
+                dataset1.save()
 
-                    with open('static/file/' + str(dataset1.id) + 'x.npy', 'wb') as f:
-                        f.write(filex.read())
+                with open('static/file/' + str(dataset1.id) + 'x.npy', 'wb') as f:
+                    f.write(filex.read())
 
-                    with open('static/file/' + str(dataset1.id) + 'y.npy', 'wb') as f:
-                        f.write(filey.read())
-                    t1 = s3.upload_data("static/file/" + str(dataset1.id) + 'x.npy', str(dataset1.id) + 'x.npy',
-                                        "dataset")
-                    t2 = s3.upload_data("static/file/" + str(dataset1.id) + 'y.npy', str(dataset1.id) + 'y.npy',
-                                        "dataset")
-                    os.remove('static/file/' + str(dataset1.id) + 'x.npy')
-                    os.remove("static/file/" + str(dataset1.id) + 'y.npy')
+                with open('static/file/' + str(dataset1.id) + 'y.npy', 'wb') as f:
+                    f.write(filey.read())
 
-                    if t1 == -1 or t2 == -1:
-                        ctx['rlt'] = '数据集上传失败！'
-                        dataset1.delete()
-                    else:
-                        dataset1.visible=1
-                        dataset1.save()
-                        rep = redirect("/modelplex/dataset/" + str(dataset1.id))
-                        return rep
+                dataset1.visible=1
+                dataset1.save()
+                rep = redirect("/modelplex/dataset/" + str(dataset1.id))
+                return rep
             else:
                 ctx['rlt'] = "文件、名字和描述均不能为空"
 

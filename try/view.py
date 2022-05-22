@@ -29,13 +29,11 @@ def show_model(request):
     if request.method=='GET':
         name = request.GET['name']
         var=ModInfo.objects.get(name=name)
-        file_lis=s3.check_bucket('modelplex-modelinfo')
-        if str(var.id)+'.h5' not in file_lis:
+        if var.visible==0:
             var.delete()
-            response='该模型上传失败，服务器未找到该模型！'
-            ctx['result_name']='查询结果'
+            response="该模型上传时遇到了错误，现不能正常访问，请您稍后再试或查看其他模型！"
             ctx['response']=response
-            return render(request,'result.html',ctx)
+            return render(request, "result.html",ctx)
         modify_add = "/modelplex/model/" + str(var.id) + "/modify_model"
         del_add="/modelplex/model/" + str(var.id) + "/delete_result"
         test_add="/modelplex/model/" + str(var.id) + "/test_model"
@@ -87,13 +85,6 @@ def show_model(request):
                     response = "与别的模型重名了！"
                     break
 
-        if File is not None:
-            nm=File.name
-            nm=nm.split('.')[-1]
-            if nm!='h5':
-                flag=1
-                response=" 不支持的文件类型！ "
-
         if flag==1:
             ctx['response']=response
             return render(request, "upload_result.html",ctx)
@@ -105,19 +96,8 @@ def show_model(request):
             with open('static/file/'+str(mod.id) + '.h5', 'wb+') as f:
                 for chunk in File.chunks():
                     f.write(chunk)
-
-            addr = s3.upload_data('static/file/'+str(mod.id)+'.h5',str(mod.id)+'.h5', 'model')
-
-            if addr == -1:
-                mod.delete()
-                response = '模型上传失败！'
-                ctx['response'] = response
-                return render(request,'upload_result.html',ctx)
-
-            mod.add = addr
             mod.visible = 1
             mod.save()
-            os.remove('static/file/'+str(mod.id)+'.h5')
 
             modify_add = "/modelplex/model/" + str(mod.id) + "/modify_model"
             del_add = "/modelplex/model/" + str(mod.id) + "/delete_result"
