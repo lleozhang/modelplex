@@ -23,6 +23,7 @@ urlpatterns = [
     path('modelplex/faq',view.faq),
     path('modelplex/search',search.search),
     path('modelplex/search_result/',search.result),
+    path('modelplex/search_dataset_result/',search.dataset_result),
     path('modelplex/upload_model',upload.upload),
     path('modelplex/model/<int:id>/modify_model/',modify.modify),
     path('modelplex/model/<int:id>/modify_model/modify_result/',modify.result),
