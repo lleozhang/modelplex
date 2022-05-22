@@ -22,7 +22,7 @@ def all_datasets(request):
 
     dataset = Dataset.objects.all()
     ctx['datasetlist'] = dataset
-    return render(request, 'faq.html', ctx)
+    return render(request, 'all_dataset.html', ctx)
 
 def homepage(request):
     ctx={}
