@@ -16,18 +16,21 @@
             <form action="/modelplex/model/" id="test_result" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div id="div-username" class="form-group">
-					<input type="radio" name="label" value="keras" onclick="show_keras_upload()">Keras<br>
+					<label class="col-sm-2 control-label">模型类型</label>
+					<input type="radio" name="label" value="keras" onclick="show_keras_upload()">Keras
 					<script type="text/javascript">
 						function show_keras_upload() {
 							document.getElementById("keras_upload").style.display="block";
 							document.getElementById("pytorch_upload").style.display="none";
+							document.getElementById("button-submit").style.display="block";
 						}
 					</script>
-					<input type="radio" name="label" value="pytorch" onclick="show_pytorch_upload()">Pytorch<br>
+					<input type="radio" name="label" value="pytorch" onclick="show_pytorch_upload()">Pytorch
 					<script type="text/javascript">
 						function show_pytorch_upload() {
 							document.getElementById("keras_upload").style.display="none";
 							document.getElementById("pytorch_upload").style.display="block";
+							document.getElementById("button-submit").style.display="block";
 						}
 					</script>
 					<label class="col-sm-2 control-label">模型名称</label>
@@ -35,16 +38,16 @@
 					<label class="col-sm-2 control-label">模型描述</label>
 					<textarea class="form-control" name="q2"rows="10"cols="60" maxlength="1000">请输入描述</textarea>
                     <div id="keras_upload" style="display: none">
-						<input type="file" name="upload"/>
+						<label class="col-sm-2 control-label">模型文件(.h5)</label> <input type="file" name="upload"/>
 					</div>
 					<div id="pytorch_upload" style="display: none">
-						<input type="file" name="upload1"/>
-						<input type="file" name="upload2"/>
+						<label class="col-sm-2 control-label">模型结构文件(.py)</label> <input type="file" name="upload1"/>
+						<label class="col-sm-2 control-label">模型参数文件(.tar)</label> <input type="file" name="upload2"/>
 					</div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-3">
-                      <button type="submit" id="button-submit" class="btn btn-default">上传</button>
+                      <button type="submit" id="button-submit" class="btn btn-default"style="display: none">上传</button>
                     </div>
                 </div>
             </form>
