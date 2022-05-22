@@ -12,9 +12,17 @@ def faq(request):
     ctx = {}
     if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true':
         ctx['username'] = request.COOKIES.get('username')
-    dataset=Dataset.objects.all()
-    ctx['datasetlist']=dataset
+
     return render(request,'faq.html',ctx)
+
+def all_datasets(request):
+    ctx = {}
+    if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true':
+        ctx['username'] = request.COOKIES.get('username')
+
+    dataset = Dataset.objects.all()
+    ctx['datasetlist'] = dataset
+    return render(request, 'faq.html', ctx)
 
 def homepage(request):
     ctx={}

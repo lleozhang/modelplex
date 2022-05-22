@@ -39,5 +39,5 @@ urlpatterns = [
     url(r'^modelplex/profile/([\w\-]+)/$', profile.profile),
     path('modelplex/dataset/<int:nowid>/', data.dataset),
     path('modelplex/model/<int:mid>/dataset_upload/', data.dataset_upload),
-
+    path('modelplex/dataset',view.all_datasets),
 ]
