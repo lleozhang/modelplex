@@ -19,11 +19,19 @@ def result(request,id):
             if var.owner != request.COOKIES.get('username'):
                 ctx['response']='你不能删除别人的模型！'
             else:
-                os.remove('static/file/'+str(var.id)+'.h5')
-                var.delete()
-                ctx['response']="删除模型成功！"
-                rep = render(request,"delete_result.html",ctx)
-                return rep
+                if var.type==0:
+                    os.remove('static/file/'+str(var.id)+'.h5')
+                    var.delete()
+                    ctx['response']="删除模型成功！"
+                    rep = render(request,"delete_result.html",ctx)
+                    return rep
+                else:
+                    os.remove('static/file/' + str(var.id) + '.py')
+                    os.remove('static/file/' + str(var.id) + '.tar')
+                    var.delete()
+                    ctx['response'] = "删除模型成功！"
+                    rep = render(request, "delete_result.html", ctx)
+                    return rep
     else:
         ctx["response"]='请登录后尝试删除！'
     return render(request, 'delete_result.html', ctx)

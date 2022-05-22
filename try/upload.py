@@ -12,6 +12,7 @@ def upload(request):
     return render(request,'upload.html',ctx)
 
 
+
 def result(request):
     name = request.POST['q1']
     description = request.POST['q2']
@@ -49,16 +50,6 @@ def result(request):
         with open(str(mod.id) + '.h5', 'wb+') as f:
             for chunk in File.chunks():
                 f.write(chunk)
-        addr = s3.upload_data(str(mod.id) + '.h5', str(mod.id)+ '.h5' , 'model')
-        if addr==-1:
-            mod.delete()
-            response='模型上传失败！'
-            flag=1
-        else:
-            mod.add=addr
-            mod.visible=1
-            mod.save()
-            response="模型上传成功！"
     ctx['response']=response
     if flag==1:
         return render(request,'upload_result.html',ctx)
