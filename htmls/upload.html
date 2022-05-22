@@ -11,24 +11,44 @@
     <body role="document">
 		<div class="container theme-showcase" role="main">
 			{% include "headerbar.html" %}
-                <div class="uoj-content">
-                    <h2 class="page-header">上传模型</h2><br><br>
-                    <form action="/modelplex/model/" id="test_result" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div id="div-username" class="form-group">                              
-                                <label class="col-sm-2 control-label">模型名称</label>
-                                <input class="form-control" type="text" name="q1" placeholder="名称" name="q1" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')" maxlength="20"> <br />
-                                <label class="col-sm-2 control-label">模型描述</label>
-                                <textarea class="form-control" name="q2"rows="10"cols="60" maxlength="1000">请输入描述</textarea>
-                            <input type="file" name="upload" />
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-3">
-                              <button type="submit" id="button-submit" class="btn btn-default">上传</button>
-                            </div>
-                        </div>
-                    </form>
-                  </div>
+        <div class="uoj-content">
+            <h2 class="page-header">上传模型</h2><br><br>
+            <form action="/modelplex/model/" id="test_result" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="div-username" class="form-group">
+					<input type="radio" name="label" value="keras" onclick="show_keras_upload()">Keras<br>
+					<script type="text/javascript">
+						function show_keras_upload() {
+							document.getElementById("keras_upload").style.display="block";
+							document.getElementById("pytorch_upload").style.display="none";
+						}
+					</script>
+					<input type="radio" name="label" value="pytorch" onclick="show_pytorch_upload()">Pytorch<br>
+					<script type="text/javascript">
+						function show_pytorch_upload() {
+							document.getElementById("keras_upload").style.display="none";
+							document.getElementById("pytorch_upload").style.display="block";
+						}
+					</script>
+					<label class="col-sm-2 control-label">模型名称</label>
+					<input class="form-control" type="text" name="q1" placeholder="名称" name="q1" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')" maxlength="20"> <br />
+					<label class="col-sm-2 control-label">模型描述</label>
+					<textarea class="form-control" name="q2"rows="10"cols="60" maxlength="1000">请输入描述</textarea>
+                    <div id="keras_upload" style="display: none">
+						<input type="file" name="upload"/>
+					</div>
+					<div id="pytorch_upload" style="display: none">
+						<input type="file" name="upload1"/>
+						<input type="file" name="upload2"/>
+					</div>
                 </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-3">
+                      <button type="submit" id="button-submit" class="btn btn-default">上传</button>
+                    </div>
+                </div>
+            </form>
+          </div>
+        </div>
     </body>
 </html>		
