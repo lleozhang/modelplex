@@ -28,6 +28,7 @@ urlpatterns = [
     path('modelplex/model/<int:id>/modify_model/',modify.modify),
     path('modelplex/model/<int:id>/modify_model/modify_result/',modify.result),
     path('modelplex/model/',view.show_model),
+    path('modelplex/all_models/',view.all_models),
     path('modelplex/model/<int:id>/delete_result/',delete.result),
     path('modelplex/model/<int:id>/test_model/',run.test_model),
     path('modelplex/model/<int:id>/test_model/test_result/',run.result),

@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Mod',
     'User',
-    'Datasetinfo'
+    'Datasetinfo',
+    'TestHistory',
 ]
 
 MIDDLEWARE = [
@@ -84,7 +85,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': 3306,
         'USER': 'root',
-        'PASSWORD': '86361911',
+        'PASSWORD': 'A*2b=2cc',
     }
 }
 

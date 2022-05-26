@@ -12,7 +12,6 @@ def upload(request):
     return render(request,'upload.html',ctx)
 
 
-
 def result(request):
     name = request.POST['q1']
     description = request.POST['q2']

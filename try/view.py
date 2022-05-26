@@ -24,6 +24,15 @@ def all_datasets(request):
     ctx['datasetlist'] = dataset
     return render(request, 'all_dataset.html', ctx)
 
+def all_models(request):
+    ctx={}
+    if request.COOKIES.get('logged') and request.COOKIES.get('logged')=='true':
+        ctx['username']=request.COOKIES.get('username')
+
+    model=ModInfo.objects.all()
+    ctx['modellist']=model
+    return render(request, 'all_model.html', ctx)
+
 def homepage(request):
     ctx={}
     if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true' :

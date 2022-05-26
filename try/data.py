@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from . import s3
 # 表单
 from Datasetinfo.models import Dataset
-
+from Mod.models import ModInfo
 
 def runoob(request):
     hello = "Hello World"
@@ -27,7 +27,7 @@ def dataset(request, nowid):
         for var in dataset1:
             ctx['data_name'] = var.name
             ctx['data_description'] = var.description
-            ctx['accuracy'] = var.accur
+            ctx['data_link']=var.link
         return render(request, "dataset_info.html", ctx)
     return HTTPResponse("error")
 
@@ -37,15 +37,39 @@ def dataset_upload(request, mid):
     ctx = {}
     result = "/modelplex/model/" + str(mid) + "/dataset_upload/"
     ctx['result'] = result
+    modset=ModInfo.objects.filter(id=mid)
+    mymod=0
+    for var in modset:
+        ctx['model_type']=var.type
+        mymod=var
     if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true':
         ctx['username'] = request.COOKIES.get('username')
         if request.method == 'POST':
-            if request.FILES and request.POST.get('dataname') and request.POST.get('datadescription'):
-                filex = request.FILES.get("dataset")
-                filey = request.FILES.get('verifydataset')
+            if request.POST.get('dataname') and request.POST.get('datadescription'):
+                filex=0
+                filey=0
                 nm = request.POST.get('dataname')
                 dc = request.POST.get('datadescription')
-
+                lk = ''
+                lb = request.POST.get('label')
+                uselink=1
+                if lb=='file':
+                    uselink=0
+                    lk='无'
+                    if request.FILES==0:
+                        ctx['rlt'] = "文件不能为空"
+                        return render(request, "dataset_upload.html", ctx)
+                    filex = request.FILES.get("dataset")
+                    if mymod.type==0:
+                        filey = request.FILES.get('verifydataset')
+                        if filey==0:
+                            ctx['rlt'] = "文件不能为空"
+                            return render(request, "dataset_upload.html", ctx)
+                else:
+                    lk = request.POST.get('datalink')
+                    if lk=='':
+                        ctx['rlt'] = "链接不能为空"
+                        return render(request, "dataset_upload.html", ctx)
                 flag=0
                 for var in Dataset.objects.all():
                     if nm==var.name:
@@ -56,9 +80,14 @@ def dataset_upload(request, mid):
                 # s3
 
 
-                dataset1 = Dataset(name=nm, description=dc, owner=request.COOKIES.get('username'), modelid=mid,
-                                   accur=1,visible=0)
+                dataset1 = Dataset(name=nm, description=dc, owner=request.COOKIES.get('username'), modelid=mid,link=lk,
+                                   accur=1,visible=0,uselink=uselink)
                 dataset1.save()
+                if uselink==1:
+                    dataset1.visible=1
+                    dataset1.save()
+                    rep = redirect("/modelplex/dataset/" + str(dataset1.id))
+                    return rep
 
                 with open('static/file/' + str(dataset1.id) + 'x.npy', 'wb') as f:
                     f.write(filex.read())
