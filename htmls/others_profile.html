@@ -26,10 +26,36 @@
                     <tr>
                         <td><a href="{{ model.homepage }}">{{model.name}}</a></td><br>
                         <td>模型描述：{{model.description}}</td><br>
-                        <td>模型准确率：{{model.accuracy}}</td><br>
-                        <td>模型测试数：{{model.tests}}</td><br>
+                        <!--<td>模型准确率：{{model.accuracy}}</td><br>
+                        <td>模型测试数：{{model.tests}}</td><br>-->
                     </tr>
                 {% endfor %}
+                <br>
+                <h2>测试历史</h2>
+				<div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+								<th style="width:10%">模型id</th>
+                                <th style="width:10%">数据集id</th>
+								<th style="width:10%">测试数据组数</th>
+								<th style="width:10%">准确率</th>
+								<th style="width:10%">召回率</th>
+								<th style="width:10%">损失函数</th>
+                            </tr>
+                        </thead>
+                        {% for history in historylist %}
+                        <tr>
+                            <td>{{history.model_id}}</td>
+                            <td><a href="/modelplex/dataset/{{history.dataset_id}}">{{history.dataset_id}}</a></td>
+							<td>{{history.dataset_number}}</td>
+							<td>{{history.accuracy}}</td>
+							<td>{{history.recall}}</td>
+							<td>{{history.loss}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
             </div>
         </div>
     </body>

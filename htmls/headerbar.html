@@ -2,7 +2,9 @@
 			<div>
 			<ul class="nav nav-pills pull-right" role="tablist">
 				<li role="presentation"><a href="/modelplex/signin">{{username|default:"登录"}}</a></li>
+				{% if not username %}
 				<li role="presentation"><a href="/modelplex/signup">注册</a></li>
+				{% endif %}
 			</ul>
 			<h1 class="hidden-xs"><a href="/modelplex"></a> Modelplex </h1>
 			<h1 class="visible-xs">Modelplex</h1>

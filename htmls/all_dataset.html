@@ -19,12 +19,14 @@
                         <thead>
                             <tr>
                                 <th style="width:10%">数据集名称</th>
+                                <th style="width:10%">上传者</th>
                                 <th style="width:40%">数据集描述</th>
                             </tr>
                         </thead>
                         {% for dataset in datasetlist %}
                         <tr>
                             <td><a href="/modelplex/dataset/{{dataset.id}}">{{dataset.name}}</a></td>
+                            <td>{{dataset.uploader}}</td>
                             <td>{{dataset.description}}</td>
                         </tr>
                         {% endfor %}

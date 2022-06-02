@@ -21,7 +21,31 @@
 					<p>模型上传者：<span>{{response_owner|safe}}</p><br>
 					<p>模型描述：<span>{{response_description}}</p><br><br>
 				</div>
-
+				测试历史：<br/>
+				<div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+								<th style="width:10%">测试者</th>
+                                <th style="width:10%">数据集id</th>
+								<th style="width:10%">测试数据组数</th>
+								<th style="width:10%">准确率</th>
+								<th style="width:10%">召回率</th>
+								<th style="width:10%">损失函数</th>
+                            </tr>
+                        </thead>
+                        {% for history in historylist %}
+                        <tr>
+                            <td>{{history.hacker}}</td>
+                            <td><a href="/modelplex/dataset/{{history.dataset_id}}">{{history.dataset_id}}</a></td>
+							<td>{{history.dataset_number}}</td>
+							<td>{{history.accuracy}}</td>
+							<td>{{history.recall}}</td>
+							<td>{{history.loss}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
                 <form action="{{ modify_add|safe }}" id="modify_model" class="form-horizontal" method="get">
 				<div class="form-group">
                     <div class="col-sm-offset-2 col-sm-3">
@@ -45,4 +69,5 @@
 	</div>
     </div>
 </div>	
-</body></html>
+</body>
+</html>

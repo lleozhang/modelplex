@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>用户注册</title>
+		<title>帮助文档</title>
 		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap.min.css" />
 		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme.min.css" />
 		<link type="text/css" rel="stylesheet" href="/static/css/uoj-theme.css" />	
@@ -18,18 +18,21 @@
                 <p>用户名必须为英文字母数字下划线和横杠，密码必须为英文字母和数字。
                   用户名和密码长度限制20个字符，登录成功后会跳转到个人主页</p>
                 <h3>上传模型</h3>
-                <p>您可以在个人主页里选择上传模型，进入上传模型页面后需填写
-                  模型名称和描述，模型名称需要和其他模型的名称不重复，描述不能
+                <p>您可以在个人主页里选择上传模型，进入上传模型页面后需选择您上传模型的类型
+                    并填写模型名称和描述，模型名称需要和其他模型的名称不重复，描述不能
                   超过1000个字符。模型描述中请您详细说明模型的输入输出类型。
-                  模型现在仅支持h5类型的文件，比如使用keras中
-                  <code>save_model</code>方法生成的文件。上传成功之后会自动
+                  模型现在支持.h5类型的文件，比如使用keras中
+                  <code>save_model</code>方法生成的文件，以及pytorch
+                    训练的模型文件，如果上传pytorch训练的模型文件则需要提交两个文件：
+                    一个是训练的模型结构(.py)文件，一个是参数包(.tar)文件，
+                    如果不按照要求上传文件将无法正确测评！上传成功之后会自动
                   跳转到模型主页，失败则会返回提示。
                 </p>
                 <h3>上传数据集</h3>
-                <p>您可以在对应模型的测试模型页面上传一个本地数据集。数据集只支持
+                <p>您可以在对应模型的测试模型页面上传一个本地数据集。数据集支持
                   npy类型文件（numpy专用的二进制文件），需要包含测试数据和标准输
-                  出结果。数据集描述说明数据集的基本信息和特点以及该模型针对哪个
-                  模型。
+                  出结果。此外您还可以选择填写datagit的链接来进行上传，对应接口详阅datagit的使用说明。
+                    数据集描述说明数据集的基本信息和特点以及该模型针对哪个模型。
                 </p>
                 <h3>测试模型</h3>
                 <p>您在模型主页选择测试模型，然后在输入框中输入您想要测试的数据集全

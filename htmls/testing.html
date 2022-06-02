@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>测试结果</title>
+		<title>{{result_name}}</title>
 		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap.min.css" />
 		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme.min.css" />
 		<link type="text/css" rel="stylesheet" href="/static/css/uoj-theme.css" />
@@ -13,13 +13,13 @@
 			{% include "headerbar.html" %}
 
             <div class="uoj-content">
-                <h2 class="page-header">测试结果</h2><br><br>
-                <p>{{response|safe}}</p>
+                <h2 class="page-header">测试中...</h2><br><br>
+                <p>一共{{size}}组数据，已经测试{{response}}组</p>
                 {{rlt}}
             </div>
 			<script language="JavaScript">
 				function myrefresh() {
-					window.location.assign("");
+					window.location.assign("http://123.56.110.120:8080/modelplex/model/4/testing/");
 				}
 				setTimeout('myrefresh()', 5000); //指定1秒刷新一次
 			</script>

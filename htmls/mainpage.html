@@ -45,6 +45,26 @@
 					</div>
 				</div>
 			<div id="sitePagebody">
+				<div class="panel panel-default">
+					<div class="panel-body">
+							<div class="col-md-6">
+								<table class="table">
+									<thead>
+										<tr>
+											<th style="width:10%">模型名称</th>
+											<th style="width:10%">上传者</th>
+										</tr>
+									</thead>
+									{% for model in modellist %}
+									<tr>
+										<td><a href={{model.homepage}}>{{model.name}}</a></td>
+										<td>{{model.owner}}</td>
+									</tr>
+									{% endfor %}
+								</table>
+							</div>
+					</div>
+				</div>
 				<div class="wrapper">
 					<div id="main" class="index-main col-8">
 						<img border="0" src="/static/modelplex.jpg" alt="What a nice page :P" width="1200" height="600">
