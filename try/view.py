@@ -65,8 +65,6 @@ def show_model(request):
         'response_name': var.name, 
         'response_description': var.description,
         'response_add':var.add,
-        'response_accuracy':var.accuracy,
-        'response_tests':var.tests,
         "modify_add":modify_add,
         'del_add':del_add,
         'test_add':test_add,
@@ -133,8 +131,7 @@ def show_model(request):
                 response_owner += mod.owner + '/'
                 response_owner += "'>" + mod.owner + "</a>"
                 ctx.update({'response_id': mod.id, 'response_name': mod.name, 'response_description': mod.description,
-                            'response_add': mod.add, 'response_accuracy': mod.accuracy,
-                            'response_tests': mod.tests, "modify_add": modify_add, 'del_add': del_add,
+                            'response_add': mod.add, "modify_add": modify_add, 'del_add': del_add,
                             'test_add': test_add, 'response_owner': response_owner})
 
                 rep = render(request, "model.html", ctx)
@@ -184,8 +181,7 @@ def show_model(request):
                 response_owner+=mod.owner+'/'
                 response_owner += "'>"+mod.owner+"</a>"
                 ctx.update({'response_id': mod.id, 'response_name': mod.name, 'response_description': mod.description,
-                              'response_add': mod.add, 'response_accuracy': mod.accuracy,
-                              'response_tests':mod.tests,"modify_add":modify_add,'del_add':del_add,'test_add':test_add,'response_owner':response_owner})
+                              'response_add': mod.add, "modify_add":modify_add,'del_add':del_add,'test_add':test_add,'response_owner':response_owner})
 
                 rep = render(request, "model.html",ctx)
                 return rep
