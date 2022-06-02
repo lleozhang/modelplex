@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'User',
     'Datasetinfo',
     'TestHistory',
+    'import_export',
 ]
 
 MIDDLEWARE = [

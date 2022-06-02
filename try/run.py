@@ -2,8 +2,12 @@ import os
 from django.shortcuts import render
 from Mod.models import ModInfo
 from Datasetinfo.models import Dataset
+from TestHistory.models import History
 from django.http import HttpResponse
 from . import s3,run_model
+from . import testmodel 
+
+# from pytorch_test.pytorch_test import testnet
 import json
 
 import random
@@ -19,7 +23,15 @@ def test_model(request,id):
     result = "/modelplex/model/" + str(id) + "/test_model/test_result"
 
     ctx.update({'address':address,'result':result})
+    ctx['testing']="/modelplex/model/" + str(id) + "/testing"
     return render(request,'test_model.html',ctx)
+
+def testing(request,id):
+    ctx={}
+    ctx['size']=testmodel.siz
+    ctx['response']=testmodel.cnt
+    return render(request,'testing.html',ctx)
+
 
 def result(request,id):
     ctx = {}
@@ -38,23 +50,60 @@ def result(request,id):
         ctx['response'] = response
         rep = render(request, 'test_result.html', ctx)
         return rep
-
-    size, accu = run_model.test_model('static/file/' + str(mod.id)  + '.h5',
-                                      'static/file/' + str(dt.id)  + 'x.npy',
-                                      'static/file/' + str(dt.id)  + 'y.npy')
-
-    if size==-1 and accu==-1:
+    lst=0
+    recall=-1
+    loss=-1
+    if mod.type==0:
+        lst=testmodel.test_keras(
+            'static/file/' + str(dt.id)  + 'x.npy',
+            'static/file/' + str(dt.id)  + 'y.npy',
+            'static/file/' + str(mod.id)  + '.h5',
+            
+            True,
+            1
+                                      
+        )
+        # size,accu,recall,loss= testmodel.test_keras(
+        #                             'static/file/' + str(dt.id)  + 'x.npy',
+        #                               'static/file/' + str(dt.id)  + 'y.npy',
+        #                               'static/file/' + str(mod.id)  + '.h5',
+        #                               )
+        if lst!=-1:
+             size,accu,loss,recall=lst
+    
+    else :
+        #rep
+         lst=testmodel.test_pytorch(
+                                     'static/file/' + str(dt.id)  + '.tar.gz',
+                                     'static/file/' + str(mod.id)  + '.pth.tar',
+                                     'pytorch_test/etc/cifar10_bn.json',
+                                     True,
+                                     1
+                                    )
+         if lst!=-1:
+             size,accu,loss,recall=lst
+    
+    if lst==-1 or (size==-1 and accu==-1):
         response = '模型测试失败，您提交的数据集无法正常在该模型上运行，请检查你提交的数据集大小是否正确、测试数据与标签是否匹配、数据集格式与模型描述中要求是否一致！'
         ctx['response']=response
         rep = render(request, 'test_result.html', ctx)
         return rep
-
+    result=History(
+        hacker = ctx['username'],
+        model_id = mod.id,
+        dataset_id = dt.id,
+        dataset_number = size,
+        accuracy = accu,
+        recall = recall,
+        loss = loss
+    )
+    result.save()
     cor=accu*size
     orc=mod.tests*mod.accuracy
     mod.tests+=size
     mod.accuracy=((orc+cor)/mod.tests)
     mod.save()
-    response="模型测试成功，此次测试了"+str(size)+'组数据，准确率为'+str(accu)
+    response="模型测试成功，此次测试了"+str(size)+'组数据，准确率为'+str(accu)+'，召回率为'+str(recall)+'，损失函数为'+str(loss)
     ctx['response']=response
     rep = render(request,'test_result.html',ctx)
     return rep

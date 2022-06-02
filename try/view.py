@@ -42,6 +42,9 @@ def homepage(request):
     ctx = {}
     if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true':
         ctx['username'] = request.COOKIES.get('username')
+    modellist=ModInfo.objects.all()
+    ctx['modellist']=modellist
+    ctx['datasetlist']=Dataset.objects.all()
     return render(request, 'mainpage.html', ctx)
 
 

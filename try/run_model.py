@@ -17,3 +17,6 @@ def test_model(model_path,testx_path, testy_path):
     except Exception as e:
         return -1,-1
     return len(testx), score[1]
+
+def test_model_pytorch(model_path,dataset_path):
+    return []

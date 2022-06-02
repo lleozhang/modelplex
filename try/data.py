@@ -88,13 +88,15 @@ def dataset_upload(request, mid):
                     dataset1.save()
                     rep = redirect("/modelplex/dataset/" + str(dataset1.id))
                     return rep
+                if mymod.type==0:
+                    with open('static/file/' + str(dataset1.id) + 'x.npy', 'wb') as f:
+                        f.write(filex.read())
 
-                with open('static/file/' + str(dataset1.id) + 'x.npy', 'wb') as f:
-                    f.write(filex.read())
-
-                with open('static/file/' + str(dataset1.id) + 'y.npy', 'wb') as f:
-                    f.write(filey.read())
-
+                    with open('static/file/' + str(dataset1.id) + 'y.npy', 'wb') as f:
+                        f.write(filey.read())
+                else:
+                    with open('static/file/' + str(dataset1.id) + '.tar.gz', 'wb') as f:
+                        f.write(filex.read())
                 dataset1.visible=1
                 dataset1.save()
                 rep = redirect("/modelplex/dataset/" + str(dataset1.id))

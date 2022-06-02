@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from Mod.models import ModInfo
 # 表单
 from Datasetinfo.models import Dataset
+from TestHistory.models import History
 # 接收请求数据
 def profile(request,name):  
     request.encoding='utf-8'
@@ -25,6 +26,7 @@ def profile(request,name):
 
         ctx['datasetlist']=dataset1
         ctx['modellist']=models
+        ctx['historylist']=History.objects.filter(hacker=name)
         if name == request.COOKIES.get('username'):
             return render(request, "profile.html",ctx)
         else :
