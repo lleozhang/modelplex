@@ -7,13 +7,24 @@ from Mod.models import ModInfo
 # 表单
 from Datasetinfo.models import Dataset
 from TestHistory.models import History
+from . import check
 # 接收请求数据
 def profile(request,name):  
     request.encoding='utf-8'
-    ctx ={}
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged') =='true':
-        ctx['Username']=request.COOKIES.get('username')
-        ctx['username']=name
+    ctx = {}
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep = render(request, 'result.html', ctx)
+        rep.set_cookie('logged', 'false')
+        rep.set_cookie('username', None)
+        rep.set_cookie('password', None)
+        return rep
+    if Ctx[0] == 1:
+        ctx['Username']=name
+        ctx['username']=request.COOKIES.get('username')
         dataset1=[]
         models=[]
         for var in Dataset.objects.all():
@@ -35,18 +46,36 @@ def profile(request,name):
         return HttpResponseRedirect('/modelplex/signin')
 
 def mp_view(request):
-    ctx={}
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged') =='true':
-        ctx['username']=request.COOKIES.get('username')
+    ctx = {}
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep = render(request, 'result.html', ctx)
+        rep.set_cookie('logged', 'false')
+        rep.set_cookie('username', None)
+        rep.set_cookie('password', None)
+        return rep
     return render(request,"modify_password.html",ctx)
 
 def modify_password(request):
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged') =='true':
+    ctx = {}
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep = render(request, 'result.html', ctx)
+        rep.set_cookie('logged', 'false')
+        rep.set_cookie('username', None)
+        rep.set_cookie('password', None)
+        return rep
+    if Ctx[0] == 1:
         last=request.POST["last_password"]
         now=request.POST["now_password"]
         renow=request.POST["repeat_password"]
         user1=User.objects.filter(name=request.COOKIES.get('username'))
-        ctx={}
         ctx['result_name']="修改结果"
         ctx['username']=request.COOKIES.get('username')
         for var in user1:
@@ -60,4 +89,7 @@ def modify_password(request):
                 var.password=now
                 var.save()
                 ctx['response']="修改成功！"
+                rep = render(request, 'result.html', ctx)
+                rep.set_cookie('password', now)
+                return rep
         return render(request,"result.html",ctx)

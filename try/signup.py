@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from User.models import User
 from django.views.decorators import csrf
+from . import check
 # 表单
 def signup_form(request):
     return render(request, 'signup_form.html')
@@ -9,11 +10,18 @@ def signup_form(request):
 # 接收请求数据
 def signup(request):  
     request.encoding='utf-8'
-    ctx ={}
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged')=='true':
-        ctx['username']=request.COOKIES.get('username')
+    ctx = {}
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep = render(request, 'result.html', ctx)
+        rep.set_cookie('logged', 'false')
+        rep.set_cookie('username', None)
+        rep.set_cookie('password', None)
+        return rep
     if request.POST and request.POST['username']:
-        
         if request.POST['password']:
             pasword=request.POST['password']
             pasword2=request.POST['confirm_password']

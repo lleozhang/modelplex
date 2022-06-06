@@ -43,4 +43,5 @@ urlpatterns = [
     path('modelplex/model/<int:mid>/dataset_upload/', data.dataset_upload),
     path('modelplex/dataset',view.all_datasets),
     path('modelplex/model/<int:id>/testing/',run.testing),
+    path('modelplex/testresult/<int:id>/',view.test_result)
 ]

@@ -26,7 +26,7 @@
                         {% for model in modellist %}
                         <tr>
                             <td><a href={{model.homepage}}>{{model.name}}</a></td>
-                            <td>{{model.owner}}</td>
+                            <td><a href="/modelplex/profile/{{model.owner}}">{{model.owner}}</a></td>
                             <td>{{model.description}}</td>
                         </tr>
                         {% endfor %}

@@ -6,7 +6,7 @@ from User.models import User
 from django.views.decorators import csrf
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
-from . import s3
+from . import s3,check
 # 表单
 from Datasetinfo.models import Dataset
 from Mod.models import ModInfo
@@ -19,8 +19,16 @@ def runoob(request):
 def dataset(request, nowid):
     request.encoding = 'utf-8'
     ctx = {}
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true':
-        ctx['username'] = request.COOKIES.get('username')
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep = render(request, 'result.html', ctx)
+        rep.set_cookie('logged', 'false')
+        rep.set_cookie('username', None)
+        rep.set_cookie('password', None)
+        return rep
     dataset1 = Dataset.objects.filter(id=nowid)
     ccnt = 0
     if dataset1.count() > 0:
@@ -35,6 +43,16 @@ def dataset(request, nowid):
 def dataset_upload(request, mid):
     request.encoding = 'utf-8'
     ctx = {}
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep = render(request, 'result.html', ctx)
+        rep.set_cookie('logged', 'false')
+        rep.set_cookie('username', None)
+        rep.set_cookie('password', None)
+        return rep
     result = "/modelplex/model/" + str(mid) + "/dataset_upload/"
     ctx['result'] = result
     modset=ModInfo.objects.filter(id=mid)
@@ -42,8 +60,7 @@ def dataset_upload(request, mid):
     for var in modset:
         ctx['model_type']=var.type
         mymod=var
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true':
-        ctx['username'] = request.COOKIES.get('username')
+    if Ctx[0] == 1:
         if request.method == 'POST':
             if request.POST.get('dataname') and request.POST.get('datadescription'):
                 filex=0

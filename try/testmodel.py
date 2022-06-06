@@ -30,7 +30,9 @@ import logging
 import traceback
 import sys
 #help(models)
+global cnt
 cnt=0
+global siz
 siz=10000
 class CIFAR10():
     MEAN = (0.485, 0.456, 0.406)
@@ -90,7 +92,8 @@ def test_pytorch(data_path,model_path,config_path = None,need_loss = None,need_r
     print(sys.path)
     try:
         net = HYPERWRN()
-        
+        #限制了CPU核数
+        torch.set_num_threads(1)
         checkpoint=torch.load(model_path,pickle_module = dill,map_location = torch.device('cpu'))
         net=checkpoint['model']
         net.eval()
@@ -124,6 +127,8 @@ def test_pytorch(data_path,model_path,config_path = None,need_loss = None,need_r
                     break
                 '''
                 sum += 1
+                global cnt
+                cnt+=1
                 images, labels = data
                 images = images.to("cpu")
                 labels = labels.to("cpu")

@@ -14,8 +14,29 @@
 
             <div class="uoj-content">
                 <h2 class="page-header">搜索结果</h2><br><br>
-                <p>{{response|safe}}</p>
-                {{rlt}}
+
+				<div class="panel panel-default">
+					<div class="panel-body">
+							<div class="col-sm-12">
+								<table class="table">
+									<thead>
+										<tr>
+											<th style="width:10%">模型名称</th>
+											<th style="width:10%">上传者</th>
+											<th style="width:40%">模型描述</th>
+										</tr>
+									</thead>
+									{% for result in resultlist %}
+									<tr>
+										<td><a href={{result.homepage}}>{{result.name}}</a></td>
+										<td><a href="/modelplex/profile/{{result.owner}}">{{result.owner}}</a></td>
+										<td>{{result.description}}</td>
+									</tr>
+									{% endfor %}
+								</table>
+							</div>
+					</div>
+				</div>
             </div>
         </div>
     </body>

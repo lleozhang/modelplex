@@ -26,22 +26,26 @@
                     <table class="table">
                         <thead>
                             <tr>
+								<th style="width:10%">测试id</th>
 								<th style="width:10%">测试者</th>
                                 <th style="width:10%">数据集id</th>
 								<th style="width:10%">测试数据组数</th>
 								<th style="width:10%">准确率</th>
 								<th style="width:10%">召回率</th>
 								<th style="width:10%">损失函数</th>
+								<th style="width:10%">测试时间</th>
                             </tr>
                         </thead>
                         {% for history in historylist %}
                         <tr>
-                            <td>{{history.hacker}}</td>
+							<td><a href="/modelplex/testresult/{{history.id}}">{{history.id}}</a></td>
+                            <td><a href="/modelplex/profile/{{history.hacker}}">{{history.hacker}}</a></td>
                             <td><a href="/modelplex/dataset/{{history.dataset_id}}">{{history.dataset_id}}</a></td>
 							<td>{{history.dataset_number}}</td>
 							<td>{{history.accuracy}}</td>
 							<td>{{history.recall}}</td>
 							<td>{{history.loss}}</td>
+							<td>{{history.test_time|date:"Y-m-d H:i:s"}}</td>
                         </tr>
                         {% endfor %}
                     </table>

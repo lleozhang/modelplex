@@ -7,6 +7,27 @@
 		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap.min.css" />
 		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme.min.css" />
 		<link type="text/css" rel="stylesheet" href="/static/css/uoj-theme.css" />
+		<!-- <style>
+		body{background-color: #FFFFFF;}
+		.typer{
+			--background:linear-gradient(to right,#000,#03FFF0 70%,green);
+			/* --font-color:linear-gradient(to right,#F00,rgb(0, 255, 60),rgb(21, 0, 255)); */
+			--font-color:linear-gradient(to right,rgb(255, 255, 0),rgb(115, 255, 0),rgb(0, 213, 255));
+			--font-size:2em;
+			display: inline-block;
+			/* font-size:var(--font-size); */
+			font-weight: bold;
+			/* padding: calc(var(--font-size) * 0.25); */
+			background:var(--font-color),var(--background);
+			-webkit-background-clip: text,border-box;
+			-webkit-text-fill-color: transparent;
+			background-clip: text,border-box;
+			color: transparent;
+		}
+		.transparent{
+			--background:transparent;
+		}
+		</style> -->
 	</head>
     <body role="document">
 		<div class="container theme-showcase" role="main">
@@ -25,19 +46,14 @@
 										</tr>
 									</thead>
 									<tr>
-										<td>我们的平台有三条公告</td>
-										<td>by yu</span></td>
-										<td><small>2022-05-22</small></td>
+										<td>欢迎来到ModelPlex</td>
+										<td>by admin</td>
+										<td><small>2022-06-02</small></td>
 									</tr>
 									<tr>
-										<td>这是一条公告</td>
-										<td>by yu</span></td>
-										<td><small>2022-05-22</small></td>
-									</tr>
-									<tr>
-										<td>这是另一条公告</td>
-										<td>by yu</span></td>
-										<td><small>2022-05-22</small></td>
+										<td><a href="/modelplex/faq">什么是ModelPlex？</a></td>
+										<td>by zhx</td>
+										<td><small>2022-06-04</small></td>
 									</tr>
 								</table>
 							</div>
@@ -46,30 +62,62 @@
 				</div>
 			<div id="sitePagebody">
 				<div class="panel panel-default">
-					<div class="panel-body">
-							<div class="col-md-6">
-								<table class="table">
-									<thead>
-										<tr>
-											<th style="width:10%">模型名称</th>
-											<th style="width:10%">上传者</th>
-										</tr>
-									</thead>
-									{% for model in modellist %}
-									<tr>
-										<td><a href={{model.homepage}}>{{model.name}}</a></td>
-										<td>{{model.owner}}</td>
-									</tr>
-									{% endfor %}
-								</table>
-							</div>
+				<div class="panel-body">
+				<div class="row">
+					<div class="col-md-6">
+						<table class="table">
+							<thead>
+								<tr>
+									<th style="width:10%">模型名称</th>
+									<th style="width:10%">上传者</th>
+								</tr>
+							</thead>
+							{% for model in modellist %}
+							<tr>
+								<td><a href={{model.homepage}}>{{model.name}}</a></td>
+								<td><a href="/modelplex/profile/{{model.owner}}" class="typer transparent">{{model.owner}}</a></td>
+							</tr>
+							{% endfor %}
+						</table>
+					</div>
+					<div class="col-md-6">
+						<table class="table">
+							<thead>
+								<tr>
+									<th style="width:10%">数据集名称</th>
+									<th style="width:10%">上传者</th>
+								</tr>
+							</thead>
+							{% for dataset in datasetlist %}
+							<tr>
+								<td><a href="/modelplex/dataset/{{dataset.id}}">{{dataset.name}}</a></td>
+								<td><a href="/modelplex/profile/{{dataset.owner}}" class="typer transparent">{{dataset.owner}}</a></td>
+							</tr>
+							{% endfor %}
+						</table>
 					</div>
 				</div>
+				</div>
+				</div>
+				
 				<div class="wrapper">
 					<div id="main" class="index-main col-8">
 						<img border="0" src="/static/modelplex.jpg" alt="What a nice page :P" width="1200" height="600">
 					</div>
 				</div>
+				
 			</div>
 		</div>	
-</body></html>
+</body>
+</html>
+<!--
+																						
+									_|            _|            _|                      
+	_|_|_|  _|_|      _|_|      _|_|_|    _|_|    _|  _|_|_|    _|    _|_|    _|    _|  
+	_|    _|    _|  _|    _|  _|    _|  _|_|_|_|  _|  _|    _|  _|  _|_|_|_|    _|_|    
+	_|    _|    _|  _|    _|  _|    _|  _|        _|  _|    _|  _|  _|        _|    _|  
+	_|    _|    _|    _|_|      _|_|_|    _|_|_|  _|  _|_|_|    _|    _|_|_|  _|    _|  
+													  _|                                
+													  _|                                
+
+-->

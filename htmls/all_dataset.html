@@ -26,7 +26,7 @@
                         {% for dataset in datasetlist %}
                         <tr>
                             <td><a href="/modelplex/dataset/{{dataset.id}}">{{dataset.name}}</a></td>
-                            <td>{{dataset.uploader}}</td>
+                            <td><a href="/modelplex/profile/{{dataset.owner}}">{{dataset.owner}}</a></td>
                             <td>{{dataset.description}}</td>
                         </tr>
                         {% endfor %}
@@ -34,6 +34,6 @@
                 </div>
         </div>
     </div>
-</div>
+    </div>
 </body>
 </html>

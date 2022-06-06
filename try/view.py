@@ -8,21 +8,35 @@ from Datasetinfo.models import Dataset
 from TestHistory.models import History
 import json
 from . import s3
-
+from . import check
 
 def faq(request):
     ctx = {}
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true':
-        ctx['username'] = request.COOKIES.get('username')
-
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep = render(request, 'result.html', ctx)
+        rep.set_cookie('logged', 'false')
+        rep.set_cookie('username', None)
+        rep.set_cookie('password', None)
+        return rep
     return render(request, 'faq.html', ctx)
 
 
 def all_datasets(request):
     ctx = {}
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true':
-        ctx['username'] = request.COOKIES.get('username')
-
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep = render(request, 'result.html', ctx)
+        rep.set_cookie('logged', 'false')
+        rep.set_cookie('username', None)
+        rep.set_cookie('password', None)
+        return rep
     dataset = Dataset.objects.all()
     ctx['datasetlist'] = dataset
     return render(request, 'all_dataset.html', ctx)
@@ -30,9 +44,16 @@ def all_datasets(request):
 
 def all_models(request):
     ctx = {}
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true':
-        ctx['username'] = request.COOKIES.get('username')
-
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep = render(request, 'result.html', ctx)
+        rep.set_cookie('logged', 'false')
+        rep.set_cookie('username', None)
+        rep.set_cookie('password', None)
+        return rep
     model = ModInfo.objects.all()
     ctx['modellist'] = model
     return render(request, 'all_model.html', ctx)
@@ -40,18 +61,49 @@ def all_models(request):
 
 def homepage(request):
     ctx = {}
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true':
-        ctx['username'] = request.COOKIES.get('username')
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep=render(request, 'result.html', ctx)
+        rep.set_cookie('logged','false')
+        rep.set_cookie('username',None)
+        rep.set_cookie('password',None)
+        return rep
     modellist=ModInfo.objects.all()
     ctx['modellist']=modellist
     ctx['datasetlist']=Dataset.objects.all()
     return render(request, 'mainpage.html', ctx)
 
+def test_result(request,id):
+    ctx = {}
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep = render(request, 'result.html', ctx)
+        rep.set_cookie('logged', 'false')
+        rep.set_cookie('username', None)
+        rep.set_cookie('password', None)
+        return rep
+    var = History.objects.get(id=id)
+    ctx['history']=var
+    return render(request,'testhistory.html',ctx)
 
 def show_model(request):
     ctx = {}
-    if request.COOKIES.get('logged') and request.COOKIES.get('logged') == 'true':
-        ctx['username'] = request.COOKIES.get('username')
+    Ctx = check.check_login(request, ctx)
+    ctx = Ctx[1]
+    if Ctx[0] == -1:
+        response = '请不要胡乱修改我们的COOKIE，这样做很不好！！！'
+        ctx['response'] = response
+        rep = render(request, 'result.html', ctx)
+        rep.set_cookie('logged', 'false')
+        rep.set_cookie('username', None)
+        rep.set_cookie('password', None)
+        return rep
     if request.method == 'GET':
         name = request.GET['name']
         var = ModInfo.objects.get(name=name)
