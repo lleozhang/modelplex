@@ -20,10 +20,7 @@
                    			 </div>
 				<div class="panel-body">
                         			<div class="row">
-                            <div class="col-md-4 col-md-push-8">
-                                <img class="media-object img-thumbnail center-block" src="//gravatar.loli.net/avatar/bc430297405bc8700e9bb55f117c8a9a?d=mm&amp;s=256" />
-                            </div>
-						<div class="col-md-8 col-md-pull-4">
+						<div class="col-md-12">
                                 				<h2><span class="username">{{response_name}}</span></h2>
                                			 <div class="list-group">
                                     				<div class="list-group-item">
@@ -41,27 +38,30 @@
                                 			</div>
                             			</div>
 				</div>
-
-                                   			<form action="{{ modify_add|safe }}" id="modify_model" class="form-horizontal" method="get">
+				<table>
+				<tr>
+                			<form action="{{ modify_add|safe }}" id="modify_model" class="form-inline" method="get">
 				<div class="form-group">
-                    			<div class="col-sm-offset-2 col-sm-3">
-                      			  <button type="submit" id="button-submit" class="btn btn-info btn-sm">修改模型信息</button>
-                    			</div>
-                  			</div></form>
+                    			<button type="submit" id="button-submit" class="btn btn-info">修改模型信息</button>
+                			</div>
+				</form>
+				</tr>
 
-				<form action="{{ del_add|safe }}" id="delete_model" class="form-horizontal" method="get">
+				<tr>
+				<form action="{{ del_add|safe }}" id="delete_model" class="form-inline" method="get">
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-3">
-					  <button type="submit" id="button-submit" class="btn btn-success btn-sm">删除模型</button>
-					</div>
-				  </div></form>
+					  <button type="submit" id="button-submit" class="btn btn-success">删除模型</button>
+				</div>
+				</form>
+				</tr>
 
-				<form action="{{ test_add|safe }}" id="test_model" class="form-horizontal" method="get">
+				<tr>
+				<form action="{{ test_add|safe }}" id="test_model" class="form-inline" method="get">
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-3">
-					  <button type="submit" id="button-submit" class="btn btn-danger btn-sm">测试模型</button>
-					</div>
+					  <button type="submit" id="button-submit" class="btn btn-danger">测试模型</button>
 				</div></form>
+				</tr>
+				</table>
                         </div>
                         <div class="top-buffer-lg"></div>
                             <div class="list-group-item">

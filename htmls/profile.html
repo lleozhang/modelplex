@@ -6,65 +6,107 @@
 		<title>个人主页</title>
 		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap.min.css" />
 		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme.min.css" />
-		<link type="text/css" rel="stylesheet" href="/static/css/uoj-theme.css" />	
+		<link type="text/css" rel="stylesheet" href="/static/css/uoj-theme.css" />
+        <link type="text/css" rel="stylesheet" href="/static/css/modelplex-theme.css" />
 	</head>
     <body role="document">
 		<div class="container theme-showcase" role="main">
 			{% include "headerbar.html" %}
 
             <div class="uoj-content">
-                <h1>{{username}}的个人主页</h1>
-                <h2>提交的数据集</h2>
-                {% for dataset in datasetlist %}
-                    <tr>
-                        <td><a href="/modelplex/dataset/{{dataset.id}}">{{dataset.name}}</a></td><br>
-                        <td>数据集描述：{{dataset.description}}</td><br>
-                    </tr>
-                {% endfor %}
-                <h2>提交的模型</h2>
-                {% for model in modellist %}
-                    <tr>
-                        <td><a href="{{ model.homepage }}">{{model.name}}</a></td><br>
-                        <td>模型描述：{{model.description}}</td><br>
-                        <!--<td>模型准确率：{{model.accuracy}}</td><br>
-                        <td>模型测试数：{{model.tests}}</td><br>-->
-                    </tr>
-                {% endfor %}
-                <br>
-                <h2>测试历史</h2>
-				<div class="col-sm-12">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th style="width:5%">测试id</th>
-								<th style="width:5%">模型id</th>
-                                <th style="width:5%">数据集id</th>
-								<th style="width:10%">测试数据组数</th>
-								<th style="width:10%">准确率</th>
-								<th style="width:10%">召回率</th>
-								<th style="width:10%">损失函数</th>
-                                <th style="width:10%">测试时间</th>
-                            </tr>
-                        </thead>
-                        {% for history in historylist %}
-                        <tr>
-                            <td><a href="/modelplex/testresult/{{history.id}}">{{history.id}}</a></td>
-                            <td>{{history.model_id}}</td>
-                            <td><a href="/modelplex/dataset/{{history.dataset_id}}">{{history.dataset_id}}</a></td>
-							<td>{{history.dataset_number}}</td>
-							<td>{{history.accuracy}}</td>
-							<td>{{history.recall}}</td>
-							<td>{{history.loss}}</td>
-                            <td>{{history.test_time|date:"Y-m-d H:i:s"}}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">用户信息</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4 col-md-push-8">
+                                <img class="media-object img-thumbnail center-block" src="//gravatar.loli.net/avatar/bc430297405bc8700e9bb55f117c8a9a?d=mm&amp;s=256" />
+                            </div>
+                            <div class="col-md-8 col-md-pull-4">
+                                <h2><span class="username">{{Username}}</span></h2>
+                                <div class="list-group">
+                                    <div class="list-group-item">
+                                        <h4 class="list-group-item-heading">个人介绍</h4>
+                                        <p class="list-group-item-text">这个人很懒，什么都没写</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if is_my_profile %}
+                        
+                        <a type="button" class="btn btn-info btn-sm" href="/modelplex/modify_password">修改密码</a>           
+                        <a type="button" class="btn btn-success btn-sm" href="/modelplex/upload_model">上传模型</a>
+                        <a type="button" class="btn btn-danger btn-sm" href="/modelplex/logout">登出</a>
+                        {% endif %}
+                        <div class="top-buffer-lg"></div>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <h4 class="list-group-item-heading">上传的模型</h4>
+                                <table class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:10%">模型名称</th>
+                                            <th style="width:40%">模型描述</th>
+                                        </tr>
+                                    </thead>
+                                    {% for model in modellist %}
+                                    <tr>
+                                        <td><a href={{model.homepage}}>{{model.name}}</a></td>
+                                        <td>{{model.description}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                            <div class="list-group-item">
+                                <h4 class="list-group-item-heading">上传的数据集</h4>
+                                <table class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:10%">数据集名称</th>
+                                            <th style="width:40%">数据集描述</th>
+                                        </tr>
+                                    </thead>
+                                    {% for dataset in datasetlist %}
+                                    <tr>
+                                        <td><a href="/modelplex/dataset/{{dataset.id}}">{{dataset.name}}</a></td>
+                                        <td>{{dataset.description}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                            <div class="list-group-item">
+                                <h4 class="list-group-item-heading">测试历史</h4>
+                                <table class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:5%">测试id</th>
+                                            <th style="width:5%">模型id</th>
+                                            <th style="width:5%">数据集id</th>
+                                            <th style="width:10%">测试数据组数</th>
+                                            <th style="width:10%">准确率</th>
+                                            <th style="width:10%">召回率</th>
+                                            <th style="width:10%">损失函数</th>
+                                            <th style="width:10%">测试时间</th>
+                                        </tr>
+                                    </thead>
+                                    {% for history in historylist %}
+                                    <tr>
+                                        <td><a href="/modelplex/testresult/{{history.id}}">{{history.id}}</a></td>
+                                        <td>{{history.model_id}}</td>
+                                        <td><a href="/modelplex/dataset/{{history.dataset_id}}">{{history.dataset_id}}</a></td>
+                                        <td>{{history.dataset_number}}</td>
+                                        <td>{{history.accuracy}}</td>
+                                        <td>{{history.recall}}</td>
+                                        <td>{{history.loss}}</td>
+                                        <td>{{history.test_time|date:"Y-m-d H:i:s"}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <a href="/modelplex/modify_password" class="btn btn-default" role="button">修改密码</a>
-                <a href="/modelplex/upload_model" class="btn btn-default" role="button">上传模型</a>
-                <form action="/modelplex/logout/">
-                    <button type="submit" class="btn btn-default"style="margin-top:10px">登出</button>
-                </form>
             </div>
         </div>
     </body>

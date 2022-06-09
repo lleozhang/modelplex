@@ -7,21 +7,39 @@
 		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap.min.css" />
 		<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme.min.css" />
 		<link type="text/css" rel="stylesheet" href="/static/css/uoj-theme.css" />
+        <link type="text/css" rel="stylesheet" href="/static/css/modelplex-theme.css" />
 	</head>
     <body role="document">
 		<div class="container theme-showcase" role="main">
 			{% include "headerbar.html" %}
             <div class="uoj-content">
                 <h2 class="page-header">测试结果</h2>
-                <h3>测试id</h3>{{history.id}}<br>
-                <h3>测试者</h3><a href="/modelplex/profile/{{history.hacker}}">{{history.hacker}}</a><br>
-                <h3>模型id</h3>{{history.model_id}}<br>
-                <h3>数据集id</h3><a href="/modelplex/dataset/{{history.dataset_id}}">{{history.dataset_id}}</a><br>
-                <h3>测试数据组数</h3>{{history.dataset_number}}<br>
-                <h3>准确率</h3>{{history.accuracy}}<br>
-                <h3>召回率</h3>{{history.recall}}<br>
-                <h3>损失函数</h3>{{history.loss}}<br>
-                <h3>测试时间</h3>{{history.test_time|date:"Y-m-d H:i:s"}}<br>
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width:5%">测试id</th>
+                            <th style="width:5%">测试者</th>
+                            <th style="width:5%">模型id</th>
+                            <th style="width:5%">数据集id</th>
+                            <th style="width:10%">测试数据组数</th>
+                            <th style="width:10%">准确率</th>
+                            <th style="width:10%">召回率</th>
+                            <th style="width:10%">损失函数</th>
+                            <th style="width:10%">测试时间</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td><a href="/modelplex/testresult/{{history.id}}">{{history.id}}</a></td>
+                        <td><a href="/modelplex/profile/{{history.hacker}}" class="username">{{history.hacker}}</a></td>
+                        <td>{{history.model_id}}</td>
+                        <td><a href="/modelplex/dataset/{{history.dataset_id}}">{{history.dataset_id}}</a></td>
+                        <td>{{history.dataset_number}}</td>
+                        <td>{{history.accuracy}}</td>
+                        <td>{{history.recall}}</td>
+                        <td>{{history.loss}}</td>
+                        <td>{{history.test_time|date:"Y-m-d H:i:s"}}</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </body>

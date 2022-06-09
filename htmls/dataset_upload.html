@@ -18,7 +18,7 @@
                     {% csrf_token %}
                     <label class="col-sm-2 control-label">上传数据集方式</label>
                     <br>
-					<input type="radio" name="label" value="link" onclick="show_link()">外部链接
+					<input type="radio" name="label" value="link" onclick="show_link()">datagit链接
 					<script type="text/javascript">
 						function show_link() {
 							document.getElementById("link_upload").style.display="block";
@@ -36,14 +36,14 @@
 					</script>
                     <br>
                     <label class="col-sm-2 control-label">数据集名称</label>
-                    <input class="form-control" type="text" name="dataname" placeholder="名称" name="q1" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')" maxlength="20"><br />
+                    <input class="form-control" type="text" name="dataname" placeholder="数据集名称必须与datagit文件夹同名" name="q1" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')" maxlength="20"><br />
                    
                     <label class="col-sm-2 control-label">数据集描述</label>
                     <textarea class="form-control" name="datadescription"rows="10"cols="60" placeholder="请输入描述" maxlength="1000"></textarea>
                     
                     <div id="link_upload" style="display: none">
                         <label class="col-sm-2 control-label">数据集链接</label>
-                        <input class="form-control" type="text" name="datalink" placeholder="链接" name="q1"  maxlength="50"><br />
+                        <input class="form-control" type="text" name="datalink" placeholder="格式为‘ssh://pkudatagit.ml/xxx --vid n’ 表示xxx仓库的第n个版本。若为keras模型测试集，数据集名请以x.npy结尾，标准结果请以y.npy结尾" name="q1"  maxlength="50"><br />
 					</div>
 					<div id="file_upload" style="display: none">
                         {% if not model_type %}
