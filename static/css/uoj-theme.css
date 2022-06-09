@@ -71,8 +71,9 @@ pre {
     tab-size: 4;
 }
 
-.uoj-username {
+.username {
 	font-weight: 800;
+	color:navy;
 }
 
 .uoj-honor {
