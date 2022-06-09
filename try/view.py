@@ -37,7 +37,7 @@ def all_datasets(request):
         rep.set_cookie('username', None)
         rep.set_cookie('password', None)
         return rep
-    dataset = Dataset.objects.all()
+    dataset = Dataset.objects.filter(visible=1)
     ctx['datasetlist'] = dataset
     return render(request, 'all_dataset.html', ctx)
 
@@ -54,7 +54,7 @@ def all_models(request):
         rep.set_cookie('username', None)
         rep.set_cookie('password', None)
         return rep
-    model = ModInfo.objects.all()
+    model = ModInfo.objects.filter(visible=1)
     ctx['modellist'] = model
     return render(request, 'all_model.html', ctx)
 
@@ -71,9 +71,9 @@ def homepage(request):
         rep.set_cookie('username',None)
         rep.set_cookie('password',None)
         return rep
-    modellist=ModInfo.objects.all()
+    modellist=ModInfo.objects.filter(visible=1)
     ctx['modellist']=modellist
-    ctx['datasetlist']=Dataset.objects.all()
+    ctx['datasetlist']=Dataset.objects.filter(visible=1)
     return render(request, 'mainpage.html', ctx)
 
 def test_result(request,id):
@@ -201,8 +201,9 @@ def show_model(request):
                 return rep
         else:
             File1 = request.FILES.get('upload1', None)
-            File2 = request.FILES.get('upload2', None)
-            if File1 is None or File2 is None:
+
+            File3 = request.FILES.get('upload3', None)
+            if File1 is None or File3 is None:
                 response += '请选择上传文件！'
                 flag = 1
             if File1 is not None:
@@ -211,13 +212,14 @@ def show_model(request):
                 if nm != 'py':
                     response += '模型结构文件必须是.py文件！ '
                     flag = 1
-            if File2 is not None:
-                nm = File2.name
-                nm = nm.split('.')[-1]
-                if nm != 'tar':
-                    response += '模型参数文件必须是.tar文件！ '
-                    flag = 1
 
+            if File3 is not None:
+                nm = File3.name
+                nm1 = nm.split('.')[-1]
+                nm2 = nm.split('.')[-2]
+                if nm1 != 'tar' or nm2 != 'pth':
+                    response += '模型参数文件必须是.pth.tar文件！ '
+                    flag = 1
             if flag == 1:
                 ctx['response'] = response
                 return render(request, "upload_result.html", ctx)
@@ -231,8 +233,9 @@ def show_model(request):
                     for chunk in File1.chunks():
                         f.write(chunk)
 
-                with open('static/file/' + str(mod.id) + '.tar', 'wb+') as f:
-                    for chunk in File2.chunks():
+
+                with open('static/file/' + str(mod.id) + '.pth.tar', 'wb+') as f:
+                    for chunk in File3.chunks():
                         f.write(chunk)
 
                 mod.visible = 1

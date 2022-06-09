@@ -3,7 +3,7 @@ import os
 import math
 import numpy as np
 import random
-
+import importlib
 from attrdict import AttrDict
 
 import torch
@@ -12,13 +12,25 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader
-
+import torch.utils
+import utils
 import torchvision
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 from keras.utils import np_utils
+import sys
+#if '/root/modelplex/try/model' not in sys.path:
+ #   sys.path.append("/root/modelplex/try/nets") 
+#from models import HYPERWRN
 
-from .nets.models import HYPERWRN
+try:
+    if '/root/modelplex/try/model/' not in sys.path:
+        sys.path.append("/root/modelplex/try/model/") 
+    from models import MODEL,load_data
+except Exception as e:
+    with open("result.txt","w")as f:
+       f.write('-1')
+    os.remove('/root/modelplex/try/model/models.py')
 import tarfile
 
 from torch import utils
@@ -28,7 +40,7 @@ import dill
 import logging
 
 import traceback
-import sys
+
 #help(models)
 global cnt
 cnt=0
@@ -51,63 +63,25 @@ class CIFAR10():
 
 
 
-
-def test_keras(testx_path,testy_path,model_path,need_loss = 1,need_recall = 1):
+def test_pytorch(model_id,data_path,model_path,config_path = None,need_loss = True,need_recall = 1):
     try:
-        model = models.load_model(model_path)
-        testx = np.load(testx_path)
-        testy = np.load(testy_path)
-        pred = model.predict(testx)
-        recall = 0
-        if (len(testx) != len(testy)):
-            return -1
-        # testx = testx.reshape((-1,784))
-        if need_recall != None:
-            P = 0
-            TP = 0
-            for i in range(len(testy)):
-                if testy[i][need_recall] == 1:
-                    P += 1
-                    if np.argmax(pred[i]) == need_recall:
-                        TP += 1
-            recall = TP/P
-        score = model.evaluate(testx, testy)
-    except Exception as e:
-        return -1
-    res = []
-    res.append(len(testx))
-    res.append(score[1])
-    if need_loss != None:
-        res.append(score[0])
-    else:
-        res.append(-1)
-    if need_recall != None:
-        res.append(recall)
-    else:
-        res.append(-1)
-    return res
-
-def test_pytorch(data_path,model_path,config_path = None,need_loss = None,need_recall = None):
-    print(0)
-    print(sys.path)
-    try:
-        net = HYPERWRN()
-        #限制了CPU核数
+        # 限制了CPU核数
         torch.set_num_threads(1)
-        checkpoint=torch.load(model_path,pickle_module = dill,map_location = torch.device('cpu'))
-        net=checkpoint['model']
+        net = MODEL()
+        
+        checkpoint = torch.load(model_path)
+        net = checkpoint
         net.eval()
-        #print(net)
-        if config_path!=None:
+        print("model been loaded")
+        # print(net)
+        if config_path != None:
             with open(config_path) as config_json_file:
                 config = json.load(config_json_file)
-        num_vs = config['num_specialists']
-        tf = tarfile.open(data_path)
-        tf.extractall('./data')
-        data = CIFAR10()
-        classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
-        trainLoader = DataLoader(data.trainset, batch_size=4, shuffle=True, num_workers=2)
-        testLoader = DataLoader(data.testset, batch_size=4, shuffle=False, num_workers=2)
+            num_vs = config['num_specialists']
+        print('here!')
+        testLoader = load_data(data_path)
+        print("data been loaded")
+        os.remove('/root/modelplex/try/model/models.py')
         criterion = nn.CrossEntropyLoss()
         net = net.to("cpu")
         correct = 0  # 预测正确的图片数
@@ -120,7 +94,7 @@ def test_pytorch(data_path,model_path,config_path = None,need_loss = None,need_r
         print(233)
         with torch.no_grad():
             for data in testLoader:
-                if sum%100 == 0:
+                if sum % 100 == 0:
                     print(sum)
                 '''
                 if sum == 500:
@@ -128,57 +102,50 @@ def test_pytorch(data_path,model_path,config_path = None,need_loss = None,need_r
                 '''
                 sum += 1
                 global cnt
-                cnt+=1
+                cnt += 1
                 images, labels = data
                 images = images.to("cpu")
                 labels = labels.to("cpu")
-                specialist_idx = np.random.randint(num_vs)
-                outputs = net(images, specialist_idx)
+                outputs = net(images)
                 _, predicted = torch.max(outputs, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum()
-                loss += criterion(outputs,labels).mean()
-                if need_recall!=None:
+                loss += criterion(outputs, labels).mean()
+                if need_recall != None:
                     P += (labels == need_recall).sum()
                     for i in range(len(labels)):
                         if predicted[i] == labels[i] and labels[i] == need_recall:
-                            TP+=1
+                            TP += 1
         loss /= len(testLoader)
         print('10000张测试集中的准确率为: %d %%' % (100 * correct / total))
     except Exception as e:
         logging.error(e)
         logging.error(traceback.format_exc())
         print(e)
-        return -1
+        return [-1]    
     res = []
     res.append(len(testLoader)*4)
     res.append((correct / total).item())
     if need_loss != None:
         res.append((loss.item()))
     else:
-        res.append(-1)
+        res.append(None)
     if need_recall != None:
         if P == 0:
             res.append(-1)
         else:
             res.append((TP/P).item())
     else:
-        res.append(-1)
+        res.append(None)
     return res
 
 
 if __name__ == '__main__':
-    '''x = np.load("mnist_testx.npy")
-    x=x.reshape((-1,784))
-    x = x[:10]
-    np.save("mnist_testx.npy",x)
-    y = np.load("mnist_testy.npy")
-    y = y[:10]
-    #y = np_utils.to_categorical(y, 10)
-    np.save("mnist_testy.npy", y)'''
-    print(0)
-    print(sys.path)
-    res1 = test_keras("mnist_testx.npy","mnist_testy.npy","mnist_model.h5",True,1)
-    print(res1)
-    res2 = test_pytorch("./data/cifar-10-python.tar.gz",'./model/final_cifar10_bn343.pth.tar','./etc/cifar10_bn.json',True,1)
+
+    res2 = test_pytorch(sys.argv[1],sys.argv[2],sys.argv[3])
     print(res2)
+    with open("result.txt","w")as f:
+        for res in res2:
+            f.write(str(res)+"\n")
+    #res2 = test_pytorch("./data/cifar-10-python.tar.gz",'./model/final_cifar10_bn343.pth.tar',True,1,'./etc/cifar10_bn.json')
+    #print(res2)

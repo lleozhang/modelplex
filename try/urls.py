@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import re_path as url
+import sys
 from . import search,upload,view,modify,delete,run,signup,signin,profile,data
 
 urlpatterns = [
@@ -31,7 +32,8 @@ urlpatterns = [
     path('modelplex/all_models/',view.all_models),
     path('modelplex/model/<int:id>/delete_result/',delete.result),
     path('modelplex/model/<int:id>/test_model/',run.test_model),
-    path('modelplex/model/<int:id>/test_model/test_result/',run.result),
+    path('modelplex/model/<int:id>/test_model/testing/',run.testing),
+    path('modelplex/model/<int:id>/test_model/result/',run.result),
     path('modelplex/signup/',signup.signup),
     path('modelplex/signin/',signin.signin),
     path('modelplex/logout/',signin.logout),

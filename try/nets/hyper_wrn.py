@@ -5,7 +5,19 @@ import math
 from warnings import warn
 from collections import defaultdict
 from termcolor import cprint
-from .hyper_layers import *
+import sys
+from  hyper_layers import *
+import torch
+#torch.cuda.current_device()
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from torch.utils.data import DataLoader
+import torch.utils
+import utils
+import torchvision
+import torchvision.transforms as transforms
+#from hyper_layers import *
 
 # Class inspired by (Savarese & Maire, ICLR 2019)
 # https://github.com/lolemacs/soft-sharing

@@ -38,10 +38,11 @@ def profile(request,name):
         ctx['datasetlist']=dataset1
         ctx['modellist']=models
         ctx['historylist']=History.objects.filter(hacker=name)
+        is_my_profile=0
         if name == request.COOKIES.get('username'):
-            return render(request, "profile.html",ctx)
-        else :
-            return render(request, "others_profile.html",ctx)
+            is_my_profile=1
+        ctx['is_my_profile']=is_my_profile
+        return render(request, "profile.html",ctx)
     else:
         return HttpResponseRedirect('/modelplex/signin')
 

@@ -36,7 +36,7 @@ def result(request,id):
                     return rep
                 else:
                     os.remove('static/file/' + str(var.id) + '.py')
-                    os.remove('static/file/' + str(var.id) + '.tar')
+                    os.remove('static/file/' + str(var.id) + '.pth.tar')
                     var.delete()
                     ctx['response'] = "删除模型成功！"
                     rep = render(request, "delete_result.html", ctx)
